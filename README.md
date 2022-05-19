@@ -5,5 +5,5 @@
 ---
 ### Proposal: TwinBee
 
-A vertical scorlling shooting game of one or two bees that shoot bells out of clouds and shoot random flying things and throw bombs at land sturctures that are mean.
+A vertical scorlling shooting game of one or two bees that shoot bells out of clouds to get power-ups and shoot random flying things and throw bombs at land sturctures that are mean.
 
