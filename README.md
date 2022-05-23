@@ -17,7 +17,7 @@ https://www.retrogames.cz/play_009-NES.php?language=EN
 - some image processing for sprites
 ---
 ### Design Document
-####Classes:
+#### Classes:
 - Projectile:
 - Enemy:
 - Bell
