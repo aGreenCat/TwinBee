@@ -26,11 +26,11 @@ https://www.retrogames.cz/play_009-NES.php?language=EN
 - Boss: Will be the superclass for a boss. Different bosses will be subclasses and have different movement, attacks, etc.
 
 #### Concepts:
-- Graphical output.
+- Graphical output for displaying sprites and the background.
 - Major control structures.
-- Keyboard input.
-- Subclasses and inheritance.
-- 1D arrays.
+- Keyboard input for controlling the player.
+- Subclasses and inheritance for enemies and bosses.
+- 1D arrays and arraylists for storing enemies and projectiles.
 
 #### User Interaction:
 The user(s) will be controlling a character using WASD. They can shoot bullets and throw bombs through two other buttons. (TBD) We can also use a game controller. The character must avoid projectiles and shoot flying enemies as they fly through the sky. They can shoot bells out of clouds for a chance to gain a power up. Collecting bells and other things add to their score.
