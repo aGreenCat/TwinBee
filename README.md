@@ -60,6 +60,6 @@ The list goes on...
 
 ##### Gameplay examples:
 ![image](g47276.png)
+![image](g47296.png)
 ![image](g47284.png)
 ![image](g47290.png)
-![image](g47296.png)
