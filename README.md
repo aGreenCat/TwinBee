@@ -17,7 +17,8 @@ https://www.retrogames.cz/play_009-NES.php?language=EN
 - some image processing for sprites
 ---
 ### Design Document
-#### Classes:
+#### Files/Classes:
+- Driver File: Will use the classes to run and display the game with keypressed for user interaction as well as score recording and different interface screens (selection screen, game over, etc.)
 - Projectile: Will model a bullet and keep its location. Will note the origin, user or enemy.
 - Enemy: Will be the superclass for every obstacle- the different enemies will be subclasses, with collisions, displays, what to do ever frame, etc.
 - Bell: Will model a bell and handle movement, powerup chances, bullet collision, etc.
