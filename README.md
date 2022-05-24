@@ -18,13 +18,12 @@ https://www.retrogames.cz/play_009-NES.php?language=EN
 ---
 ### Design Document
 #### Classes:
-- Projectile:
-- Enemy:
-- Bell
-- Player
-- Cloud
-
-
+- Projectile: Will model a bullet and keep its location. Will note the origin, user or enemy.
+- Enemy: Will be the superclass for every obstacle- the different enemies will be subclasses, with collisions, displays, what to do ever frame, etc.
+- Bell: Will model a bell and handle movement, powerup chances, bullet collision, etc.
+- Player: The player! Can shoot bullets, throw bombs. (Movement is rather simple and will be controlled in a keypressed). 
+- Cloud: Similar to an Enemy but it is harmless to the player. Has a chance of having a bell hidden inside. Collisions.
+- Boss: Will be the superclass for a boss. Different bosses will be subclasses and have different movement, attacks, etc.
 
 Misc:
 
