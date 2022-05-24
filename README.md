@@ -25,9 +25,21 @@ https://www.retrogames.cz/play_009-NES.php?language=EN
 - Cloud: Similar to an Enemy but it is harmless to the player. Has a chance of having a bell hidden inside. Collisions.
 - Boss: Will be the superclass for a boss. Different bosses will be subclasses and have different movement, attacks, etc.
 
-Misc:
+#### Concepts:
+- Graphical output.
+- Major control structures.
+- Keyboard input.
+- Subclasses and inheritance.
+- 1D arrays.
 
-Enemy types:
+#### User Interaction:
+The user(s) will be controlling a character using WASD. They can shoot bullets and throw bombs through two other buttons. (TBD) We can also use a game controller. The character must avoid projectiles and shoot flying enemies as they fly through the sky. They can shoot bells out of clouds for a chance to gain a power up. Collecting bells and other things add to their score.
+
+#### Libraries:
+- Sound: to make the game more enjoyable and immersive.
+
+#### Mock up:
+##### Enemy types:
 - Turnips: Diagonal, shoot when behind you
 - Strawberry: Diagonal, can switch direction when xvals are same with player.
 - Pepper: Diagonal, when close, slowly zooms off horizontally
@@ -43,3 +55,7 @@ Enemy types:
 
 - Fires: Diagonal sine wave then loops in the middle.
 - Crabs: Goes down on both sides, goes horizontal when it has same y val as the player.
+
+The list goes on...
+
+##### Gameplay examples:
