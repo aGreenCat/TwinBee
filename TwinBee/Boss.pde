@@ -1,0 +1,6 @@
+class Boss extends Enemy{
+  
+  
+  
+  
+}
