@@ -4,7 +4,7 @@ class Enemy{
   float xVel, yVel;
   PImage sprite;
   
-  Player(float _x, float _y, PImage _sprite){
+  Enemy(float _x, float _y, PImage _sprite){
     x = _x;
     y = _y;
     xVel = 0;

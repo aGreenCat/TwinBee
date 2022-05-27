@@ -7,7 +7,7 @@ class Bell{
   Bell(PVector _pos, PVector _vel){
     pos = _pos;
     vel = _vel;
-    ace = PVector(0, 0);  
-    sprite = loadImage();
+    ace = new PVector(0, 0);  
+  //  sprite = loadImage();
   }
 }

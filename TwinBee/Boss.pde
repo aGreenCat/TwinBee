@@ -1,6 +1,6 @@
-class Boss extends Enemy{
+//class Boss extends Enemy{
   
   
   
   
-}
+//}

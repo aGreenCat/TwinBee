@@ -6,18 +6,29 @@ class Player{
   Player(float _x, float _y, int playerNum){
     x = _x;
     y = _y;
-    if (playerNum == 1){
-      sprite = ;
-    }
-    else {
-      sprite = ; 
-    }
-    xVel = 0;
-    yVel = 0;
+    
+    sprite = loadImage("P" + playerNum + ".png");
+    xVel = 1;
+    yVel = 1;
   }
   
   void display(){
-    image(sprite, x, y);   
+    image(sprite, x-16, y-16, 32, 32);   
+  }
+  
+  void move(){
+    if (keys[LEFTMOVE]) {
+      x-=xVel;
+    }
+    if (keys[RIGHTMOVE]) {
+      x+=xVel;
+    }
+    if (keys[UPMOVE]) {
+      y-=yVel;
+    }
+    if (keys[DOWNMOVE]) {
+      y+=yVel;
+    }
   }
   
 }

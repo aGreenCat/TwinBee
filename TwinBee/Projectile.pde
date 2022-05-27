@@ -13,7 +13,7 @@ class Projectile{
     xVel = _xVel;
     yVel = _yVel;
     source = _source;
-    sprite = ;
+    //sprite = ;
   }
   
   void display(){
