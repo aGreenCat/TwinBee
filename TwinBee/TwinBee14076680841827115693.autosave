@@ -1,0 +1,28 @@
+Player player1;
+
+
+void setup(){
+  size(512, 448);
+  player1 = new Player(width/2, height/2, 1);
+}
+
+void draw(){
+  background(0, 0, 255);
+  
+  player1.display();
+  
+}
+
+
+void keyPressed() {
+  if (key=='a') {
+    keys.
+  } else if (key=='d') {
+    keys[RIGHTMOVE]=true;
+  }
+  if (key=='w') {
+    keys[UPMOVE]=true;
+  } else if (key=='s') {
+    keys[DOWNMOVE]=true;
+  }
+}
