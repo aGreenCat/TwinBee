@@ -8,10 +8,10 @@ class Cloud {
   int bounceCoolDown = 5;
   int bounceState = 1;
 
-  Cloud(int _x, int _y) {
+  Cloud(float _x, float _y) {
     x =_x;
     y= _y;
-    yVel = .75;
+    yVel = random(0.5, 0.75);
     if (random(1) < bellRate) {
       bell = true;
     }
@@ -29,7 +29,7 @@ class Cloud {
 
   void bounce() {
     bounceCoolDown++;
-    if (bounceCoolDown > 50) {
+    if (bounceCoolDown > 30) {
       bounceState = abs(bounceState - 1);
       sprite = loadImage("cloud" + bounceState + ".png");
       bounceCoolDown = 0;

@@ -11,6 +11,9 @@ int DOWNMOVETWO = 7;
 int PLAYER = 23;
 int ENEMY = 32;
 
+int MAX_CLOUDS = 3;
+float cloudRate = 0.0025;
+
 int cooldown = 5;
 
 boolean shoot;
@@ -19,6 +22,7 @@ int numKeys = 4;
 
 Player player1;
 ArrayList<Projectile> bullets;
+ArrayList<Cloud> clouds;
 Cloud cloud9;
 
 void setup() {
@@ -27,6 +31,7 @@ void setup() {
 
   player1 = new Player(width/2, height/2, 1);
   bullets = new ArrayList<Projectile>();
+  clouds = new ArrayList<Cloud>();
   
   cloud9 = new Cloud(width/2, height/2);
 }
@@ -39,6 +44,7 @@ void draw() {
   cloud9.update();
 
   handleBullets();
+  handleClouds();
   player1.display();
   cloud9.display();
 
@@ -61,6 +67,17 @@ void handleBullets() {
     }
 
     bullet.display();
+  }
+}
+
+void handleClouds(){
+  if (random(1) < cloudRate){
+    clouds.add(new Cloud(random(64, width-64), -32));
+  }
+  
+  for (int i = 0; i < clouds.size(); i++) {
+    clouds.get(i).update();
+    clouds.get(i).display();
   }
 }
 
