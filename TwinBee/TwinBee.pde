@@ -19,6 +19,7 @@ int numKeys = 4;
 
 Player player1;
 ArrayList<Projectile> bullets;
+Cloud cloud9;
 
 void setup() {
   size(512, 448);
@@ -26,6 +27,8 @@ void setup() {
 
   player1 = new Player(width/2, height/2, 1);
   bullets = new ArrayList<Projectile>();
+  
+  cloud9 = new Cloud(width/2, height/2);
 }
 
 void draw() {
@@ -33,10 +36,11 @@ void draw() {
   //player1.x = mouseX;
   //player1.y = mouseY;
   player1.move();
-
+  cloud9.update();
 
   handleBullets();
   player1.display();
+  cloud9.display();
 
   cooldown++;
   if (cooldown > 10 && shoot) {
