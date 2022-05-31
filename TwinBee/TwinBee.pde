@@ -35,6 +35,7 @@ Player player1;
 ArrayList<Projectile> bullets;
 ArrayList<Cloud> clouds;
 ArrayList<Enemy> enemies;
+ArrayList<Bell> bells;
 
 void setup() {
   size(512, 448);
@@ -44,6 +45,7 @@ void setup() {
   bullets = new ArrayList<Projectile>();
   clouds = new ArrayList<Cloud>();
   enemies = new ArrayList<Enemy>();
+  bells = new ArrayList<Bell>();
 }
 
 void draw() {
@@ -53,6 +55,7 @@ void draw() {
   handleBullets();
   handleClouds();
   handleEnemies();
+  handleBells();
 
   player1.display();
 
@@ -72,8 +75,21 @@ void handleBullets() {
     if (bullet.touchingEdges()) {
       bullets.remove(bullet);
       i--;
+      continue;
     }
-
+    
+    for (int j = 0; j < clouds.size(); j++) {
+      Cloud cloud = clouds.get(j);
+      
+      if (cloud.bell && cloud.collided(bullet)){
+        cloud.bell = false;
+        bells.add(new Bell(cloud));
+        
+        bullets.remove(bullet);
+        i--;
+      }
+    }
+    
     bullet.display();
   }
 }
@@ -136,6 +152,34 @@ void handleEnemies() {
   }
 }
 
+
+void handleBells(){
+  for (int i = 0; i < bells.size(); i++) {
+    Bell bell = bells.get(i);
+    
+    bell.update();
+    
+    for (int j = 0; j < bullets.size(); j++){
+      Projectile bullet = bullets.get(j);
+      
+      if (bell.collided(bullet)){
+        bell.yVel = -3;
+        bell.xVel = (bell.x - bullet.x) / 20;
+        bullets.remove(bullet);
+        j--;
+      }
+      
+    }
+    
+    if (bell.atBottom()){
+      bells.remove(bell);
+      i--;
+    }
+    
+    bell.display();
+  }
+  
+}
 
 void spawnStrawberries() {
   if (random(1) < 0.5) {

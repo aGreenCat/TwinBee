@@ -1,0 +1,32 @@
+class Strawberry extends Enemy{
+  
+  int spriteState = 1;
+  int animateCooldown = 5;
+  boolean run;
+  
+  Strawberry(float _x, float _y){
+    super(_x, _y);
+    yVel = 1;
+    
+    sprite = loadImage("enemy_strawberry_1.png");
+  }
+  
+  void update(){
+    animateCooldown++;
+    if (animateCooldown > 10) {
+      spriteState = abs(spriteState - 1);
+      sprite = loadImage("enemy_strawberry_" + spriteState + ".png");
+      animateCooldown = 0;
+    }
+    
+    super.update();
+    
+  }
+  /*
+  boolean detect(Player p){
+    if (x == p.x && 
+    return false;
+    
+  }
+  */
+}

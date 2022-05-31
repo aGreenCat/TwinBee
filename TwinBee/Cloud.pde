@@ -1,5 +1,5 @@
 class Cloud {
-  static final float bellRate = 0.5;
+  static final float BELL_RATE = 0.5;
 
   float x, y;
   float yVel;
@@ -13,7 +13,7 @@ class Cloud {
     x =_x;
     y= _y;
     yVel = random(0.5, 0.75);
-    if (random(1) < bellRate) {
+    if (random(1) < BELL_RATE) {
       bell = true;
     }
     sprites = new PImage[2];
@@ -44,5 +44,9 @@ class Cloud {
       sprite = sprites[frame];
       frameCoolDown = 0;
     }
+  }
+  
+  boolean collided(Projectile p) {
+    return abs(p.x - x) < 22 && abs(p.y - y) < 22;
   }
 }
