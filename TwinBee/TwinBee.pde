@@ -1,3 +1,13 @@
+/*
+PROJECT V0 DEMO
+
+USE WASD to move.
+N to shoot.
+
+Clouds currently do nothings and you do not die.
+*/
+
+
 int LEFTMOVEONE = 0;
 int RIGHTMOVEONE = 1;
 int UPMOVEONE = 2;
