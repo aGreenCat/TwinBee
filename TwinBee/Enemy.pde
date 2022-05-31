@@ -64,7 +64,7 @@ class Enemy {
   }
 
   boolean collided(Player p) {
-    return abs(p.x - x) < 32 && abs(p.y - y) < 32;
+    return sqrt(sq(p.x-x) + sq(p.y-y)) < 16;
   }
 
   private void handleFrames() {

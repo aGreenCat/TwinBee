@@ -1,11 +1,11 @@
 /*
 PROJECT V0 DEMO
-
-USE WASD to move.
-N to shoot.
-
-Clouds currently do nothings and you do not die.
-*/
+ 
+ USE WASD to move.
+ N to shoot.
+ 
+ Clouds currently do nothings and you do not die.
+ */
 
 
 int LEFTMOVEONE = 0;
@@ -50,19 +50,21 @@ void setup() {
 
 void draw() {
   background(0, 0, 255);
-  player1.move();
 
   handleBullets();
   handleClouds();
   handleEnemies();
   handleBells();
 
+  player1.update();
   player1.display();
 
-  cooldown++;
-  if (cooldown > 10 && shoot) {
-    bullets.add(new Projectile(player1.x, player1.y, 0, -10, PLAYER));
-    cooldown = 0;
+  if (player1.dead == 0) {
+    cooldown++;
+    if (cooldown > 10 && shoot) {
+      bullets.add(new Projectile(player1.x, player1.y, 0, -10, PLAYER));
+      cooldown = 0;
+    }
   }
 }
 
@@ -77,19 +79,19 @@ void handleBullets() {
       i--;
       continue;
     }
-    
+
     for (int j = 0; j < clouds.size(); j++) {
       Cloud cloud = clouds.get(j);
-      
-      if (cloud.bell && cloud.collided(bullet)){
+
+      if (cloud.bell && cloud.collided(bullet)) {
         cloud.bell = false;
         bells.add(new Bell(cloud));
-        
+
         bullets.remove(bullet);
         i--;
       }
     }
-    
+
     bullet.display();
   }
 }
@@ -118,7 +120,7 @@ void handleEnemies() {
     spawnStrawberries();
     nextEnemy = (int) random(frameCount + 120, frameCount + 600);
   }
-  
+
   for (int i = 0; i < enemies.size(); i++) {
     Enemy enemy = enemies.get(i);
 
@@ -145,6 +147,10 @@ void handleEnemies() {
           j--;
         }
       }
+
+      if (enemy.collided(player1)) {
+        player1.setDead();
+      }
     }
 
     enemy.update();
@@ -153,42 +159,40 @@ void handleEnemies() {
 }
 
 
-void handleBells(){
+void handleBells() {
   for (int i = 0; i < bells.size(); i++) {
     Bell bell = bells.get(i);
-    
+
     bell.update();
-    
-    for (int j = 0; j < bullets.size(); j++){
+
+    for (int j = 0; j < bullets.size(); j++) {
       Projectile bullet = bullets.get(j);
-      
-      if (bell.collided(bullet)){
+
+      if (bell.collided(bullet)) {
         bell.yVel = -3;
         bell.xVel = (bell.x - bullet.x) / 20;
         bullets.remove(bullet);
         j--;
       }
-      
     }
-    
-    if (bell.atBottom()){
+
+    if (bell.atBottom()) {
       bells.remove(bell);
       i--;
     }
-    
+
     bell.display();
   }
-  
 }
 
 void spawnStrawberries() {
   if (random(1) < 0.5) {
     for (int i = 0; i < 5; i++) {
-      enemies.add(new Strawberry(112-i*32, -16-i*32));
+      enemies.add(new Strawberry(112-i*23, -16-i*23));
     }
   } else {
     for (int i = 0; i < 5; i++) {
-      enemies.add(new Strawberry(400+i*32, -16-i*32));
+      enemies.add(new Strawberry(400+i*23, -16-i*23));
     }
   }
 }

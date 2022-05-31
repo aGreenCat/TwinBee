@@ -12,9 +12,9 @@ class Bell {
     x = c.x;
     y = c.y;
     xVel = 0;
-    yVel = -5;
+    yVel = -3;
     xAcel = 0;
-    yAcel = 0.08;
+    yAcel = 0.05;
 
     sprites = new PImage[3];
     sprites[0] = loadImage("bell.png");
@@ -46,7 +46,7 @@ class Bell {
   
   void spin() {
     frameCoolDown++;
-    if (frameCoolDown > 5) {
+    if (frameCoolDown > 10) {
       frame++;
       if (frame == 3) {
         frame = 0;
