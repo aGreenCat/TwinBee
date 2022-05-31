@@ -34,9 +34,15 @@ class Enemy {
 
   void update() {
     handleFrames();
+    
+    changes();
 
     xVel += xAcel;
     yVel += yAcel;
+  }
+  
+  void changes() {
+    //leave blank: define in each subclass
   }
 
   void move() {

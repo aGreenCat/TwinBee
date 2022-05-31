@@ -1,5 +1,7 @@
 class Strawberry extends Enemy{
   
+  boolean changedDir = false;
+  
   Strawberry(float _x, float _y){
     super(_x, _y);
     sprites = new PImage[2];
@@ -9,10 +11,17 @@ class Strawberry extends Enemy{
     sprite = sprites[0];
     
     if (x > width/2) {
-      xVel = -2;
+      xVel = -2.2;
     } else {
-      xVel = 2;
+      xVel = 2.2;
     }
-    yVel = 2;
+    yVel = 2.2;
+  }
+  
+  void changes() {
+    if (!changedDir && abs(player1.x - x) < 5 && player1.y - y < 128) {
+      xVel *= -1;
+      changedDir = true;
+    }
   }
 }
