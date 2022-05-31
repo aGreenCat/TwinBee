@@ -4,9 +4,10 @@ class Cloud {
   float x, y;
   float yVel;
   PImage sprite;
+  PImage sprites[];
   boolean bell;
-  int bounceCoolDown = 5;
-  int bounceState = 1;
+  int frameCoolDown = 0;
+  int frame = 1;
 
   Cloud(float _x, float _y) {
     x =_x;
@@ -15,7 +16,11 @@ class Cloud {
     if (random(1) < bellRate) {
       bell = true;
     }
-    sprite = loadImage("cloud1.png");
+    sprites = new PImage[2];
+    sprites[0] = loadImage("cloud1.png");
+    sprites[1] = loadImage("cloud0.png");
+    
+    sprite = sprites[0];
   }
 
   void display() {
@@ -24,15 +29,20 @@ class Cloud {
 
   void update() {
     y+=yVel;
+    
     bounce();
+  }
+  
+  boolean atBottom() {
+    return y-16 > height;
   }
 
   void bounce() {
-    bounceCoolDown++;
-    if (bounceCoolDown > 30) {
-      bounceState = abs(bounceState - 1);
-      sprite = loadImage("cloud" + bounceState + ".png");
-      bounceCoolDown = 0;
+    frameCoolDown++;
+    if (frameCoolDown > 30) {
+      frame = 1 - frame;
+      sprite = sprites[frame];
+      frameCoolDown = 0;
     }
   }
 }
