@@ -37,6 +37,9 @@ ArrayList<Cloud> clouds;
 ArrayList<Enemy> enemies;
 ArrayList<Bell> bells;
 
+PImage background[];
+float BACK_SCROLL = 0.5;
+
 void setup() {
   size(512, 448);
   keys = new boolean[numKeys];
@@ -46,10 +49,23 @@ void setup() {
   clouds = new ArrayList<Cloud>();
   enemies = new ArrayList<Enemy>();
   bells = new ArrayList<Bell>();
+  
+  background = new PImage[3];
+  background[0] = loadImage("back0.png");
+  background[1] = loadImage("back1.png");
+  background[2] = loadImage("back2.png");
+  
+  fill(255);
+  textSize(20);
 }
 
 void draw() {
-  background(0, 0, 255);
+  background(0);
+  image(background[0], 0, -992 + (frameCount*BACK_SCROLL + 960) % 1440);
+  image(background[1], 0, -992 + (frameCount*BACK_SCROLL + 480) % 1440);
+  image(background[2], 0, -992 + frameCount*BACK_SCROLL % 1440);
+  
+  text(frameCount, 35, 50);
 
   handleBullets();
   handleClouds();
@@ -170,7 +186,7 @@ void handleBells() {
 
       if (bell.collided(bullet)) {
         bell.yVel = -3;
-        bell.xVel = (bell.x - bullet.x) / 20;
+        bell.xVel = (bell.x - bullet.x) / 27;
         bullets.remove(bullet);
         j--;
       }

@@ -12,7 +12,7 @@ class Cloud {
   Cloud(float _x, float _y) {
     x =_x;
     y= _y;
-    yVel = random(0.5, 0.75);
+    yVel = random(0.55, 0.75);
     if (random(1) < BELL_RATE) {
       bell = true;
     }
