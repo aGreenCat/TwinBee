@@ -14,7 +14,7 @@ class Bell {
     xVel = 0;
     yVel = -3;
     xAcel = 0;
-    yAcel = 0.05;
+    yAcel = 0.08;
 
     sprites = new PImage[3];
     sprites[0] = loadImage("bell.png");
@@ -38,6 +38,10 @@ class Bell {
   
   boolean collided(Projectile p) {
     return abs(p.x - x) < 22 && abs(p.y - y) < 22;
+  }
+  
+  boolean collided(Player p) {
+    return abs(p.x - x) < 30 && abs(p.y - y) < 30;
   }
   
   boolean atBottom() {

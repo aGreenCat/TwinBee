@@ -11,11 +11,11 @@ class Strawberry extends Enemy{
     sprite = sprites[0];
     
     if (x > width/2) {
-      xVel = -3;
+      xVel = -3.5;
     } else {
-      xVel = 3;
+      xVel = 3.5;
     }
-    yVel = 3;
+    yVel = 3.5;
   }
   
   void changes() {

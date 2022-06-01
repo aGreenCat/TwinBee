@@ -49,12 +49,12 @@ void setup() {
   clouds = new ArrayList<Cloud>();
   enemies = new ArrayList<Enemy>();
   bells = new ArrayList<Bell>();
-  
+
   background = new PImage[3];
   background[0] = loadImage("back0.png");
   background[1] = loadImage("back1.png");
   background[2] = loadImage("back2.png");
-  
+
   fill(255);
   textSize(20);
 }
@@ -64,7 +64,7 @@ void draw() {
   image(background[0], 0, -992 + (frameCount*BACK_SCROLL + 960) % 1440);
   image(background[1], 0, -992 + (frameCount*BACK_SCROLL + 480) % 1440);
   image(background[2], 0, -992 + frameCount*BACK_SCROLL % 1440);
-  
+
   text(frameCount, 35, 50);
 
   handleBullets();
@@ -143,6 +143,7 @@ void handleEnemies() {
     if (enemy.dead == 2) {
       enemies.remove(enemy);
       i--;
+      continue;
     }
 
     if (enemy.dead == 0) {
@@ -151,6 +152,7 @@ void handleEnemies() {
       if (enemy.atBottom()) {
         enemies.remove(enemy);
         i--;
+        continue;
       }
 
       for (int j = 0; j < bullets.size(); j++) {
@@ -181,6 +183,12 @@ void handleBells() {
 
     bell.update();
 
+    if (bell.collided(player1)) {
+      bells.remove(bell);
+      i--;
+      continue;
+    }
+
     for (int j = 0; j < bullets.size(); j++) {
       Projectile bullet = bullets.get(j);
 
@@ -202,13 +210,19 @@ void handleBells() {
 }
 
 void spawnStrawberries() {
-  if (random(1) < 0.5) {
+  float xSpawn = player1.x;
+
+  if (player1.x > width/2) {
+    xSpawn -= player1.y + 16;
+    xSpawn = max(xSpawn, 16);
     for (int i = 0; i < 5; i++) {
-      enemies.add(new Strawberry(112-i*23, -16-i*23));
+      enemies.add(new Strawberry(xSpawn-i*23, -16-i*23));
     }
   } else {
+    xSpawn += player1.y + 16;
+    xSpawn = min(xSpawn, 496);
     for (int i = 0; i < 5; i++) {
-      enemies.add(new Strawberry(400+i*23, -16-i*23));
+      enemies.add(new Strawberry(xSpawn+i*23, -16-i*23));
     }
   }
 }
