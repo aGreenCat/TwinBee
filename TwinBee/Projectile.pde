@@ -17,7 +17,7 @@ class Projectile{
     xVel = _xVel;
     yVel = _yVel;
     source = _source;
-    sprite = loadImage("bullet.png");
+    sprite = BULLETSPRITE;
   }
   
   void display(){

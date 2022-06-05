@@ -18,10 +18,13 @@ class Player {
     y = _y;
     playerNum = _pn;
 
-    sprite = loadImage("P" + playerNum + ".png");
+    if (playerNum == 1)
+      sprite = PLAYERSPRITE1;
+    else 
+      sprite = PLAYERSPRITE2;
     deaths = new PImage[2];
-    deaths[0] = loadImage("deadPlayer0.png");
-    deaths[1] = loadImage("deadPlayer1.png");
+    deaths[0] = DEADPLAYER0;
+    deaths[1] = DEADPLAYER1;
   }
 
   void display() {

@@ -22,10 +22,10 @@ class Enemy {
     yAcel = 0;
     
     deaths = new PImage[4];
-    deaths[0] = loadImage("death_0.png");
-    deaths[1] = loadImage("death_1.png");
-    deaths[2] = loadImage("death_2.png");
-    deaths[3] = loadImage("death_3.png");
+    deaths[0] = DEATH0;
+    deaths[1] = DEATH1;
+    deaths[2] = DEATH2;
+    deaths[3] = DEATH3;
   }
 
   void display() {
@@ -87,6 +87,5 @@ class Enemy {
         dead = 2;
       }
     }
-    
   }
 }

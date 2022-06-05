@@ -40,8 +40,71 @@ ArrayList<Bell> bells;
 PImage background[];
 float BACK_SCROLL = 0.5;
 
+PImage BELLSPRITES[];
+PImage CLOUD0, CLOUD1;
+PImage DEATH0, DEATH1, DEATH2, DEATH3;
+PImage PLAYERSPRITE1, PLAYERSPRITE2;
+PImage DEADPLAYER0, DEADPLAYER1;
+PImage BULLETSPRITE;
+PImage STRAWBERRYSPRITE0, STRAWBERRYSPRITE1; 
+
+void loadImages() {
+ CLOUD0 = loadImage("cloud0.png"); CLOUD1 = loadImage("cloud1.png");
+ DEATH0 = loadImage("death_0.png"); DEATH1 = loadImage("death_1.png"); DEATH2 = loadImage("death_2.png"); DEATH3 = loadImage("death_3.png");
+ PLAYERSPRITE1 = loadImage("P1.png"); PLAYERSPRITE2 = loadImage("P2.png");
+ DEADPLAYER0 = loadImage("deadPlayer0.png"); DEADPLAYER1 = loadImage("deadPlayer1.png");
+ BULLETSPRITE = loadImage("bullet.png");
+ STRAWBERRYSPRITE0 = loadImage("enemy_strawberry_0.png"); STRAWBERRYSPRITE1 = loadImage("enemy_strawberry_1.png"); 
+  
+  //bells
+  color colors[];
+
+  colors = new color[8];
+  colors[0] = #23B4F5;
+  colors[1] = #2F91BC;
+  colors[2] = #FFFFFF;
+  colors[3] = #CCCCCC;
+  colors[4] = #47F248;
+  colors[5] = #409B41;
+  colors[6] = #E83521;
+  colors[7] = #791E14;
+
+  BELLSPRITES = new PImage[15];
+  BELLSPRITES[0] = loadImage("bell.png");
+  BELLSPRITES[1] = loadImage("bell_left.png");
+  BELLSPRITES[2] = loadImage("bell_right.png");
+
+  for (int i = 3; i < 15; i+=3) {
+    BELLSPRITES[i] = loadImage("bell.png");
+    BELLSPRITES[i+1] = loadImage("bell_left.png");
+    BELLSPRITES[i+2] = loadImage("bell_right.png");
+
+    BELLSPRITES[i].loadPixels();
+    BELLSPRITES[i+1].loadPixels();
+    BELLSPRITES[i+2].loadPixels();
+
+    for (int j = 0; j < 48*48; j++) {
+      for (int k = 0; k < 3; k ++) {
+        if (BELLSPRITES[i+k].pixels[j] == #fed18e) {
+          BELLSPRITES[i+k].pixels[j] = colors[2*(i/3-1)];
+        }
+
+        if (BELLSPRITES[i+k].pixels[j] == #1fa5fe) {
+          BELLSPRITES[i+k].pixels[j] = colors[2*(i/3-1)+1];
+        }
+      }
+    }
+
+    BELLSPRITES[i].updatePixels();
+    BELLSPRITES[i+1].updatePixels();
+    BELLSPRITES[i+2].updatePixels();
+  }
+}
+
 void setup() {
   size(512, 448);
+  
+  loadImages();
   keys = new boolean[numKeys];
 
   player1 = new Player(width/2, 400, 1);
@@ -54,6 +117,8 @@ void setup() {
   background[0] = loadImage("back0.png");
   background[1] = loadImage("back1.png");
   background[2] = loadImage("back2.png");
+
+  
 
   fill(255);
   textSize(20);
@@ -174,6 +239,8 @@ void handleEnemies() {
     enemy.update();
     enemy.display();
   }
+  
+  println(enemies.size() * bullets.size());
 }
 
 

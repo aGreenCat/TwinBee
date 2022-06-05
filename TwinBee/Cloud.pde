@@ -17,8 +17,8 @@ class Cloud {
       bell = true;
     }
     sprites = new PImage[2];
-    sprites[0] = loadImage("cloud1.png");
-    sprites[1] = loadImage("cloud0.png");
+    sprites[0] = CLOUD1;
+    sprites[1] = CLOUD0;
     
     sprite = sprites[0];
   }

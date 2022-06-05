@@ -5,8 +5,8 @@ class Strawberry extends Enemy{
   Strawberry(float _x, float _y){
     super(_x, _y);
     sprites = new PImage[2];
-    sprites[0] = loadImage("enemy_strawberry_0.png");
-    sprites[1] = loadImage("enemy_strawberry_1.png");
+    sprites[0] = STRAWBERRYSPRITE0;
+    sprites[1] = STRAWBERRYSPRITE1;
     
     sprite = sprites[0];
     
