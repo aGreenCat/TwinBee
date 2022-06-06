@@ -22,9 +22,9 @@ class Bell {
     x = c.x;
     y = c.y;
     xVel = 0;
-    yVel = -3;
+    yVel = -2;
     xAcel = 0;
-    yAcel = 0.08;
+    yAcel = 0.07;
 
     sprites = BELLSPRITES;
     

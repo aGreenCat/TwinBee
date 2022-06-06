@@ -8,6 +8,14 @@ PROJECT V0 DEMO
  */
 import java.util.*;
 
+//Mode
+int mode;
+int MENU = 0;
+int ONE_PLAYER_GAME = 1;
+int TWO_PLAYER_GAME = 2;
+
+PImage banner;
+
 int LEFTMOVEONE = 0;
 int RIGHTMOVEONE = 1;
 int UPMOVEONE = 2;
@@ -49,6 +57,8 @@ PImage BULLETSPRITE;
 PImage STRAWBERRYSPRITE0, STRAWBERRYSPRITE1; 
 
 void loadImages() {
+ banner = loadImage("banner.png");
+  
  CLOUD0 = loadImage("cloud0.png"); CLOUD1 = loadImage("cloud1.png");
  DEATH0 = loadImage("death_0.png"); DEATH1 = loadImage("death_1.png"); DEATH2 = loadImage("death_2.png"); DEATH3 = loadImage("death_3.png");
  PLAYERSPRITE1 = loadImage("P1.png"); PLAYERSPRITE2 = loadImage("P2.png");
@@ -103,8 +113,10 @@ void loadImages() {
 
 void setup() {
   size(512, 448);
-  
   loadImages();
+  
+  mode = MENU;
+  
   keys = new boolean[numKeys];
 
   player1 = new Player(width/2, 400, 1);
@@ -117,11 +129,7 @@ void setup() {
   background[0] = loadImage("back0.png");
   background[1] = loadImage("back1.png");
   background[2] = loadImage("back2.png");
-
   
-
-  fill(255);
-  textSize(20);
 }
 
 void draw() {
@@ -129,23 +137,53 @@ void draw() {
   image(background[0], 0, -992 + (frameCount*BACK_SCROLL + 960) % 1440);
   image(background[1], 0, -992 + (frameCount*BACK_SCROLL + 480) % 1440);
   image(background[2], 0, -992 + frameCount*BACK_SCROLL % 1440);
-
-  text(frameCount, 35, 50);
   
-  handleBullets();
+  
   handleClouds();
-  handleEnemies();
-  handleBells();
-
-  player1.update();
-  player1.display();
-
-  if (player1.dead == 0) {
-    cooldown++;
-    if (cooldown > 10 && shoot) {
-      bullets.add(new Projectile(player1.x, player1.y, 0, -10, PLAYER));
-      cooldown = 0;
+  if (mode != MENU) {
+    handleBullets();
+    handleEnemies();
+    handleBells();
+  
+    player1.update();
+    player1.display();
+  
+    if (player1.dead == 0) {
+      cooldown++;
+      if (cooldown > 10 && shoot) {
+        bullets.add(new Projectile(player1.x, player1.y, 0, -10, PLAYER));
+        cooldown = 0;
+      }
     }
+    
+    fill(255);
+    textSize(20);
+    textAlign(LEFT, BASELINE);
+    text(frameCount, 35, 50);
+  } else {
+    textAlign(CENTER, CENTER);
+    textSize(17);
+    noStroke();
+    
+    
+    fill(#e0f070ca);
+    if (abs(mouseX - width/2) < 75 && abs(mouseY - 275) < 30) {
+      fill(#f070ca);
+      if (mousePressed) mode = ONE_PLAYER_GAME;
+    }
+    rect(width/2-75, 250, 150, 60, 5);
+    fill(#e0f070ca);
+    if (abs(mouseX - width/2) < 75 && abs(mouseY - 350) < 30) {
+      fill(#f070ca);
+      if (mousePressed) mode = TWO_PLAYER_GAME;
+    }
+    rect(width/2-75, 325, 150, 60, 5);
+    
+    fill(255);
+    text("One Player", width/2, 276);
+    text("Two Players", width/2, 351);
+    
+    image(banner, width/2-160, 75, 330, 90);
   }
 }
 
