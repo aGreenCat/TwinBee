@@ -35,16 +35,16 @@ class Player {
   void move() {
     if (playerNum == 1) {
       if (keys[LEFTMOVEONE]) {
-        x-=xVel;
+        x-=xVel*FRAMERATE/frameRate;
       }
       if (keys[RIGHTMOVEONE]) {
-        x+=xVel;
+        x+=xVel*FRAMERATE/frameRate;
       }
       if (keys[UPMOVEONE]) {
-        y-=yVel;
+        y-=yVel*FRAMERATE/frameRate;
       }
       if (keys[DOWNMOVEONE]) {
-        y+=yVel;
+        y+=yVel*FRAMERATE/frameRate;
       }
     } else {
     }

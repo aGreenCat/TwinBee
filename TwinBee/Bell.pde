@@ -38,10 +38,10 @@ class Bell {
 
   void update() {
     spin();
-    x += xVel;
-    y += yVel;
-    xVel += xAcel;
-    yVel += yAcel;
+    x += xVel*FRAMERATE/frameRate;
+    y += yVel*FRAMERATE/frameRate;
+    xVel += xAcel*FRAMERATE/frameRate;
+    yVel += yAcel*FRAMERATE/frameRate;
   }
   
   boolean collided(Projectile p) {

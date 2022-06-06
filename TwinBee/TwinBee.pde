@@ -16,6 +16,8 @@ int TWO_PLAYER_GAME = 2;
 
 PImage banner;
 
+float FRAMERATE = 60.0;
+
 int LEFTMOVEONE = 0;
 int RIGHTMOVEONE = 1;
 int UPMOVEONE = 2;
@@ -113,6 +115,8 @@ void loadImages() {
 
 void setup() {
   size(512, 448);
+  frameRate(90);
+  
   loadImages();
   
   mode = MENU;
@@ -159,7 +163,7 @@ void draw() {
     fill(255);
     textSize(20);
     textAlign(LEFT, BASELINE);
-    text(frameCount, 35, 50);
+    text(frameRate, 35, 50);
   } else {
     textAlign(CENTER, CENTER);
     textSize(17);

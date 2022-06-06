@@ -28,7 +28,7 @@ class Cloud {
   }
 
   void update() {
-    y+=yVel;
+    y+=yVel*FRAMERATE/frameRate;
     
     bounce();
   }

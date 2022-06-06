@@ -25,8 +25,8 @@ class Projectile{
   }
   
   void update() {
-    x += xVel;
-    y += yVel;
+    x += xVel*FRAMERATE/frameRate;
+    y += yVel*FRAMERATE/frameRate;
   }
   
   boolean touchingEdges() {

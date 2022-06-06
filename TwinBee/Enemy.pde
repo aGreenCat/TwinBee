@@ -37,8 +37,8 @@ class Enemy {
     
     changes();
 
-    xVel += xAcel;
-    yVel += yAcel;
+    xVel += xAcel*FRAMERATE/frameRate;
+    yVel += yAcel*FRAMERATE/frameRate;
   }
   
   void changes() {
@@ -46,8 +46,8 @@ class Enemy {
   }
 
   void move() {
-    x += xVel;
-    y += yVel;
+    x += xVel*FRAMERATE/frameRate;
+    y += yVel*FRAMERATE/frameRate;
   }
 
   void setDead() {
