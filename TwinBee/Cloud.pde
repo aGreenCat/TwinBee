@@ -39,7 +39,7 @@ class Cloud {
 
   void bounce() {
     frameCoolDown++;
-    if (frameCoolDown > 30) {
+    if (frameCoolDown > frameRate/2.0) {
       frame = 1 - frame;
       sprite = sprites[frame];
       frameCoolDown = 0;

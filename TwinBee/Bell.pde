@@ -38,6 +38,12 @@ class Bell {
 
   void update() {
     spin();
+    if (x >= width-16){
+      xVel = -abs(xVel); 
+    }
+    if (x <= 16){
+      xVel = abs(xVel); 
+    }
     x += xVel*FRAMERATE/frameRate;
     y += yVel*FRAMERATE/frameRate;
     xVel += xAcel*FRAMERATE/frameRate;
@@ -68,7 +74,7 @@ class Bell {
   
   void spin() {
     frameCoolDown++;
-    if (frameCoolDown > 10) {
+    if (frameCoolDown > frameRate/6.0) {
       frame++;
       if (frame == 3) {
         frame = 0;

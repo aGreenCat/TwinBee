@@ -154,7 +154,7 @@ void draw() {
   
     if (player1.dead == 0) {
       cooldown++;
-      if (cooldown > 10 && shoot) {
+      if (cooldown > frameRate/6.0 && shoot) {
         bullets.add(new Projectile(player1.x, player1.y, 0, -10, PLAYER));
         cooldown = 0;
       }
@@ -223,7 +223,7 @@ void handleBullets() {
 void handleClouds() {
   if (frameCount > nextCloud) {
     clouds.add(new Cloud(random(64, width-64), -32));
-    nextCloud = (int) random(frameCount + 40, frameCount + 300);
+    nextCloud = (int) random(frameCount + frameRate/2, frameCount + frameRate*5.0);
   }
 
   Iterator<Cloud> iter = clouds.iterator();
@@ -242,7 +242,7 @@ void handleClouds() {
 void handleEnemies() {
   if (frameCount > nextEnemy) {
     spawnStrawberries();
-    nextEnemy = (int) random(frameCount + 120, frameCount + 600);
+    nextEnemy = (int) random(frameCount + frameRate*2, frameCount + frameRate*10);
   }
   
   Iterator<Enemy> iter = enemies.iterator();
