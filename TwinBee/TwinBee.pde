@@ -6,7 +6,7 @@ PROJECT V0 DEMO
  
  Clouds currently do nothings and you do not die.
  */
-
+import java.util.*;
 
 int LEFTMOVEONE = 0;
 int RIGHTMOVEONE = 1;
@@ -131,7 +131,7 @@ void draw() {
   image(background[2], 0, -992 + frameCount*BACK_SCROLL % 1440);
 
   text(frameCount, 35, 50);
-
+  
   handleBullets();
   handleClouds();
   handleEnemies();
@@ -239,8 +239,6 @@ void handleEnemies() {
     enemy.update();
     enemy.display();
   }
-  
-  println(enemies.size() * bullets.size());
 }
 
 
@@ -264,6 +262,7 @@ void handleBells() {
         bell.xVel = (bell.x - bullet.x) / 27;
         bullets.remove(bullet);
         j--;
+        break;
       }
     }
 
