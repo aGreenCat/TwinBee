@@ -32,10 +32,10 @@ boolean[] keys;
 int numKeys = 4;
 
 Player player1;
-ArrayList<Projectile> bullets;
-ArrayList<Cloud> clouds;
-ArrayList<Enemy> enemies;
-ArrayList<Bell> bells;
+Set<Projectile> bullets;
+Set<Cloud> clouds;
+Set<Enemy> enemies;
+Set<Bell> bells;
 
 PImage background[];
 float BACK_SCROLL = 0.5;
@@ -108,10 +108,10 @@ void setup() {
   keys = new boolean[numKeys];
 
   player1 = new Player(width/2, 400, 1);
-  bullets = new ArrayList<Projectile>();
-  clouds = new ArrayList<Cloud>();
-  enemies = new ArrayList<Enemy>();
-  bells = new ArrayList<Bell>();
+  bullets = new HashSet<Projectile>();
+  clouds = new HashSet<Cloud>();
+  enemies = new HashSet<Enemy>();
+  bells = new HashSet<Bell>();
 
   background = new PImage[3];
   background[0] = loadImage("back0.png");
@@ -150,26 +150,27 @@ void draw() {
 }
 
 void handleBullets() {
-  for (int i = 0; i < bullets.size(); i++) {
-    Projectile bullet = bullets.get(i);
+  Iterator<Projectile> iter = bullets.iterator();
+  while (iter.hasNext()) {
+    Projectile bullet = iter.next();
 
     bullet.update();
 
     if (bullet.touchingEdges()) {
-      bullets.remove(bullet);
-      i--;
+      iter.remove();
       continue;
     }
-
-    for (int j = 0; j < clouds.size(); j++) {
-      Cloud cloud = clouds.get(j);
+      
+      
+    Iterator<Cloud> itera = clouds.iterator();
+    while (itera.hasNext()) {
+      Cloud cloud = itera.next();
 
       if (cloud.bell && cloud.collided(bullet)) {
         cloud.bell = false;
         bells.add(new Bell(cloud));
 
-        bullets.remove(bullet);
-        i--;
+        iter.remove();
       }
     }
 
@@ -183,13 +184,13 @@ void handleClouds() {
     nextCloud = (int) random(frameCount + 40, frameCount + 300);
   }
 
-  for (int i = 0; i < clouds.size(); i++) {
-    Cloud cloud = clouds.get(i);
+  Iterator<Cloud> iter = clouds.iterator();
+  while (iter.hasNext()) {
+    Cloud cloud = iter.next();
     cloud.update();
 
     if (cloud.atBottom()) {
-      clouds.remove(cloud);
-      i--;
+      iter.remove();
     }
 
     cloud.display();
@@ -201,13 +202,13 @@ void handleEnemies() {
     spawnStrawberries();
     nextEnemy = (int) random(frameCount + 120, frameCount + 600);
   }
-
-  for (int i = 0; i < enemies.size(); i++) {
-    Enemy enemy = enemies.get(i);
+  
+  Iterator<Enemy> iter = enemies.iterator();
+  while (iter.hasNext()) {
+    Enemy enemy = iter.next();
 
     if (enemy.dead == 2) {
-      enemies.remove(enemy);
-      i--;
+      iter.remove();
       continue;
     }
 
@@ -215,19 +216,18 @@ void handleEnemies() {
       enemy.move();
 
       if (enemy.atBottom()) {
-        enemies.remove(enemy);
-        i--;
+        iter.remove();
         continue;
       }
-
-      for (int j = 0; j < bullets.size(); j++) {
-        Projectile bullet = bullets.get(j);
+      
+      Iterator<Projectile> itera = bullets.iterator();
+      while (itera.hasNext()) {
+        Projectile bullet = itera.next();
 
         if (enemy.collided(bullet)) {
           enemy.setDead();
 
-          bullets.remove(bullet);
-          j--;
+          itera.remove();
         }
       }
 
@@ -243,32 +243,31 @@ void handleEnemies() {
 
 
 void handleBells() {
-  for (int i = 0; i < bells.size(); i++) {
-    Bell bell = bells.get(i);
+  Iterator<Bell> iter = bells.iterator();
+  while (iter.hasNext()) {
+    Bell bell = iter.next();
 
     bell.update();
 
     if (bell.collided(player1)) {
-      bells.remove(bell);
-      i--;
+      iter.remove();
       continue;
     }
-
-    for (int j = 0; j < bullets.size(); j++) {
-      Projectile bullet = bullets.get(j);
+  
+    Iterator<Projectile> itera = bullets.iterator();
+    while (itera.hasNext()) {
+      Projectile bullet = itera.next();
 
       if (bell.collided(bullet)) {
         bell.yVel = -3;
         bell.xVel = (bell.x - bullet.x) / 27;
-        bullets.remove(bullet);
-        j--;
+        itera.remove();
         break;
       }
     }
 
     if (bell.atBottom()) {
-      bells.remove(bell);
-      i--;
+      iter.remove();
     }
 
     bell.display();
