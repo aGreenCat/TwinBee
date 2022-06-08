@@ -22,7 +22,7 @@ class Bell {
     x = c.x;
     y = c.y;
     xVel = 0;
-    yVel = -2;
+    yVel = -3;
     xAcel = 0;
     yAcel = 0.07;
 

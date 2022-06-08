@@ -13,6 +13,7 @@ int mode;
 int MENU = 0;
 int ONE_PLAYER_GAME = 1;
 int TWO_PLAYER_GAME = 2;
+boolean BOSS = false;
 
 PImage banner;
 
@@ -37,6 +38,8 @@ int nextCloud = 0;
 
 int cooldown = 5;
 
+int scroll;
+
 boolean shoot;
 boolean[] keys;
 int numKeys = 4;
@@ -47,6 +50,10 @@ Set<Cloud> clouds;
 Set<Enemy> enemies;
 Set<Bell> bells;
 
+
+int nextBoss = 120;
+BossA A;
+
 PImage background[];
 float BACK_SCROLL = 0.5;
 
@@ -56,18 +63,25 @@ PImage DEATH0, DEATH1, DEATH2, DEATH3;
 PImage PLAYERSPRITE1, PLAYERSPRITE2;
 PImage DEADPLAYER0, DEADPLAYER1;
 PImage BULLETSPRITE;
-PImage STRAWBERRYSPRITE0, STRAWBERRYSPRITE1; 
+PImage STRAWBERRYSPRITE0, STRAWBERRYSPRITE1;
 
 void loadImages() {
- banner = loadImage("banner.png");
-  
- CLOUD0 = loadImage("cloud0.png"); CLOUD1 = loadImage("cloud1.png");
- DEATH0 = loadImage("death_0.png"); DEATH1 = loadImage("death_1.png"); DEATH2 = loadImage("death_2.png"); DEATH3 = loadImage("death_3.png");
- PLAYERSPRITE1 = loadImage("P1.png"); PLAYERSPRITE2 = loadImage("P2.png");
- DEADPLAYER0 = loadImage("deadPlayer0.png"); DEADPLAYER1 = loadImage("deadPlayer1.png");
- BULLETSPRITE = loadImage("bullet.png");
- STRAWBERRYSPRITE0 = loadImage("enemy_strawberry_0.png"); STRAWBERRYSPRITE1 = loadImage("enemy_strawberry_1.png"); 
-  
+  banner = loadImage("banner.png");
+
+  CLOUD0 = loadImage("cloud0.png");
+  CLOUD1 = loadImage("cloud1.png");
+  DEATH0 = loadImage("death_0.png");
+  DEATH1 = loadImage("death_1.png");
+  DEATH2 = loadImage("death_2.png");
+  DEATH3 = loadImage("death_3.png");
+  PLAYERSPRITE1 = loadImage("P1.png");
+  PLAYERSPRITE2 = loadImage("P2.png");
+  DEADPLAYER0 = loadImage("deadPlayer0.png");
+  DEADPLAYER1 = loadImage("deadPlayer1.png");
+  BULLETSPRITE = loadImage("bullet.png");
+  STRAWBERRYSPRITE0 = loadImage("enemy_strawberry_0.png");
+  STRAWBERRYSPRITE1 = loadImage("enemy_strawberry_1.png");
+
   //bells
   color colors[];
 
@@ -116,11 +130,11 @@ void loadImages() {
 void setup() {
   size(512, 448);
   frameRate(90);
-  
+
   loadImages();
-  
+
   mode = MENU;
-  
+
   keys = new boolean[numKeys];
 
   player1 = new Player(width/2, 400, 1);
@@ -133,25 +147,35 @@ void setup() {
   background[0] = loadImage("back0.png");
   background[1] = loadImage("back1.png");
   background[2] = loadImage("back2.png");
-  
 }
 
 void draw() {
   background(0);
-  image(background[0], 0, -992 + (frameCount*BACK_SCROLL + 960) % 1440);
-  image(background[1], 0, -992 + (frameCount*BACK_SCROLL + 480) % 1440);
-  image(background[2], 0, -992 + frameCount*BACK_SCROLL % 1440);
-  
-  
+
+  if (!BOSS) scroll++;
+  image(background[0], 0, -992 + (scroll*BACK_SCROLL + 960) % 1440);
+  image(background[1], 0, -992 + (scroll*BACK_SCROLL + 480) % 1440);
+  image(background[2], 0, -992 + scroll*BACK_SCROLL % 1440);
+
   handleClouds();
   if (mode != MENU) {
-    handleBullets();
     handleEnemies();
     handleBells();
-  
+    handleBullets();
+
+    if (BOSS) {
+      fill(#55000000);
+      rect(0, 0, width, height);
+    }
+
     player1.update();
     player1.display();
-  
+    if (mode == TWO_PLAYER_GAME) {
+      //player2.update();
+      //player2. display();
+    }
+
+
     if (player1.dead == 0) {
       cooldown++;
       if (cooldown > frameRate/6.0 && shoot) {
@@ -159,17 +183,26 @@ void draw() {
         cooldown = 0;
       }
     }
-    
+
     fill(255);
     textSize(20);
     textAlign(LEFT, BASELINE);
-    text(frameRate, 35, 50);
+    text(scroll, 35, 50);
+    
+    
+    if (scroll > nextBoss) {
+      BOSS = true;
+      A = new BossA();
+      enemies.add(A);
+      
+      nextBoss += 60*90;
+    }
   } else {
     textAlign(CENTER, CENTER);
     textSize(17);
     noStroke();
-    
-    
+
+
     fill(#e0f070ca);
     if (abs(mouseX - width/2) < 75 && abs(mouseY - 275) < 30) {
       fill(#f070ca);
@@ -182,11 +215,11 @@ void draw() {
       if (mousePressed) mode = TWO_PLAYER_GAME;
     }
     rect(width/2-75, 325, 150, 60, 5);
-    
+
     fill(255);
     text("One Player", width/2, 276);
     text("Two Players", width/2, 351);
-    
+
     image(banner, width/2-160, 75, 330, 90);
   }
 }
@@ -202,8 +235,8 @@ void handleBullets() {
       iter.remove();
       continue;
     }
-      
-      
+
+
     Iterator<Cloud> itera = clouds.iterator();
     while (itera.hasNext()) {
       Cloud cloud = itera.next();
@@ -221,9 +254,11 @@ void handleBullets() {
 }
 
 void handleClouds() {
-  if (frameCount > nextCloud) {
-    clouds.add(new Cloud(random(64, width-64), -32));
-    nextCloud = (int) random(frameCount + frameRate/2, frameCount + frameRate*5.0);
+  if (!BOSS) {
+    if (frameCount > nextCloud) {
+      clouds.add(new Cloud(random(64, width-64), -32));
+      nextCloud = (int) random(frameCount + frameRate/2, frameCount + frameRate*5.0);
+    }
   }
 
   Iterator<Cloud> iter = clouds.iterator();
@@ -240,11 +275,13 @@ void handleClouds() {
 }
 
 void handleEnemies() {
-  if (frameCount > nextEnemy) {
-    spawnStrawberries();
-    nextEnemy = (int) random(frameCount + frameRate*2, frameCount + frameRate*10);
+  if (!BOSS) {
+    if (frameCount > nextEnemy) {
+      spawnStrawberries();
+      nextEnemy = (int) random(frameCount + frameRate*2, frameCount + frameRate*10);
+    }
   }
-  
+
   Iterator<Enemy> iter = enemies.iterator();
   while (iter.hasNext()) {
     Enemy enemy = iter.next();
@@ -261,7 +298,7 @@ void handleEnemies() {
         iter.remove();
         continue;
       }
-      
+
       Iterator<Projectile> itera = bullets.iterator();
       while (itera.hasNext()) {
         Projectile bullet = itera.next();
@@ -295,7 +332,7 @@ void handleBells() {
       iter.remove();
       continue;
     }
-  
+
     Iterator<Projectile> itera = bullets.iterator();
     while (itera.hasNext()) {
       Projectile bullet = itera.next();
@@ -351,6 +388,10 @@ void keyPressed() {
 
   if (key == 'n') {
     shoot = true;
+  }
+
+  if (key == ' ') {
+    BOSS = !BOSS;
   }
 }
 
