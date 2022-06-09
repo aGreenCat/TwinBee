@@ -20,6 +20,10 @@ class BossASheilds extends Enemy {
     }
   }
   
+  boolean collided(Player p) {
+    return sq(p.x - x) + sq(p.y - y) < sq(32);
+  }
+  
   void handleFrames() {
     f++;
 

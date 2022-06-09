@@ -28,7 +28,7 @@ class Bell {
 
     sprites = BELLSPRITES;
     
-    type = int(random(5));
+    type = BNORMAL;
     sprite = sprites[type*3];
   }
 

@@ -52,7 +52,7 @@ Set<Enemy> enemies;
 Set<Bell> bells;
 
 
-int bossAspawn = 90*2;
+int bossAspawn = 90*10;
 BossA A;
 
 Boss currentBoss;
@@ -402,6 +402,7 @@ void handleBells() {
       if (bell.collided(bullet)) {
         bell.yVel = -3;
         bell.xVel = (bell.x - bullet.x) / 27;
+        bell.changeColor();
         itera.remove();
         break;
       }
