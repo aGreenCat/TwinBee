@@ -36,15 +36,19 @@ class Player {
     if (playerNum == 1) {
       if (keys[LEFTMOVEONE]) {
         x-=xVel*FRAMERATE/frameRate;
+        if (x < 16) x = 16;
       }
       if (keys[RIGHTMOVEONE]) {
         x+=xVel*FRAMERATE/frameRate;
+        if (x > width-16) x = width-16;
       }
       if (keys[UPMOVEONE]) {
         y-=yVel*FRAMERATE/frameRate;
+        if (y < 16) y = 16;
       }
       if (keys[DOWNMOVEONE]) {
         y+=yVel*FRAMERATE/frameRate;
+        if (y > height-16) y = height-16;
       }
     } else {
     }

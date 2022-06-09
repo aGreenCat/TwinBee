@@ -1,6 +1,6 @@
 class Boss extends Enemy {
   boolean ENTERING = true;
-  float maxHealth;
+  int maxHealth;
  
   Boss() {
     super(width/2, -320);

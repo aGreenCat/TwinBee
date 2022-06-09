@@ -30,6 +30,8 @@ class Enemy {
     deaths[2] = DEATH2;
     deaths[3] = DEATH3;
     deaths[4] = createImage(0, 0, 0);
+    
+    health = 1;
   }
 
   void display() {
@@ -68,7 +70,7 @@ class Enemy {
   }
 
   boolean collided(Player p) {
-    return sqrt(sq(p.x-x) + sq(p.y-y)) < 16;
+    return abs(p.x - x) < 27 && abs(p.y - y) < 27;
   }
 
   void handleFrames() {

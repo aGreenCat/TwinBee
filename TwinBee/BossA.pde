@@ -6,8 +6,8 @@ class BossA extends Boss {
     super();
     sprite = loadImage("Boss0.png");
     
-    health = 20;
-    maxHealth = 20;
+    maxHealth = 30;
+    health = maxHealth;
   }
 
   void changes() {
@@ -35,7 +35,6 @@ class BossA extends Boss {
         }
         f = 0;
       }
-      println(frame);
       if (frame == 24) {
         dead = 2;
       }

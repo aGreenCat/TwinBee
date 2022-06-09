@@ -51,7 +51,7 @@ Set<Enemy> enemies;
 Set<Bell> bells;
 
 
-int nextBoss = 90*5;
+int bossAspawn = 90*5;
 BossA A;
 
 Boss currentBoss;
@@ -70,6 +70,7 @@ PImage PLAYERSPRITE1, PLAYERSPRITE2;
 PImage DEADPLAYER0, DEADPLAYER1;
 PImage BULLETSPRITE;
 PImage STRAWBERRYSPRITE0, STRAWBERRYSPRITE1;
+PImage BOSSASHEILD;
 
 void loadImages() {
   banner = loadImage("banner.png");
@@ -87,6 +88,7 @@ void loadImages() {
   BULLETSPRITE = loadImage("bullet.png");
   STRAWBERRYSPRITE0 = loadImage("enemy_strawberry_0.png");
   STRAWBERRYSPRITE1 = loadImage("enemy_strawberry_1.png");
+  BOSSASHEILD = loadImage("bossA_sheilds.png");
 
   //bells
   color colors[];
@@ -165,9 +167,6 @@ void draw() {
 
   handleClouds();
   if (mode != MENU) {
-    handleEnemies();
-    handleBells();
-    handleBullets();
 
     if (BOSS) {
       fill(#55000000);
@@ -176,6 +175,10 @@ void draw() {
       //should be fine, only one element to loop over.
       currentBoss.display();
     }
+
+    handleEnemies();
+    handleBells();
+    handleBullets();
 
     player1.update();
     player1.display();
@@ -199,17 +202,21 @@ void draw() {
     text(scroll, 35, 50);
 
 
-    if (scroll > nextBoss) {
+    if (scroll > bossAspawn) {
       BOSS = true;
       A = new BossA();
       enemies.add(A);
       currentBoss = A;
 
-      nextBoss += 60*90;
+      for (int i = 0; i < 8; i++) {
+        enemies.add(new BossASheilds(45 * i));
+      }
+
+      bossAspawn += 99999999;
     }
 
     if (BOSS) {
-      hbw += 0.1*(width*currentBoss.health/currentBoss.maxHealth - hbw);
+      hbw += 0.1*(width*currentBoss.health*1.0/currentBoss.maxHealth - hbw);
       float g = currentBoss.health * 1.0/currentBoss.maxHealth;
       fill(color(255-g*170, 85+g*170, 100));
       rect(0, 0, hbw, 6);
@@ -326,18 +333,11 @@ void handleEnemies() {
         Projectile bullet = itera.next();
 
         if (enemy.collided(bullet)) {
-          if (enemy.equals(currentBoss)) {
-            itera.remove();
-            if (!currentBoss.ENTERING) {
-              enemy.health--;
-
-              if (enemy.health == 0) {
-                enemy.setDead();
-              }
-            }
-          } else {
+          itera.remove(); {
+          enemy.health--;
+          
+          if (enemy.health == 0) {
             enemy.setDead();
-            itera.remove();
           }
         }
       }
