@@ -46,12 +46,13 @@ int numKeys = 4;
 
 Player player1;
 Set<Projectile> bullets;
+Set<Projectile> badBullets;
 Set<Cloud> clouds;
 Set<Enemy> enemies;
 Set<Bell> bells;
 
 
-int bossAspawn = 90*5;
+int bossAspawn = 90*2;
 BossA A;
 
 Boss currentBoss;
@@ -147,6 +148,7 @@ void setup() {
 
   player1 = new Player(width/2, 400, 1);
   bullets = new HashSet<Projectile>();
+  badBullets = new HashSet<Projectile>();
   clouds = new HashSet<Cloud>();
   enemies = new HashSet<Enemy>();
   bells = new HashSet<Bell>();
@@ -175,10 +177,13 @@ void draw() {
       //should be fine, only one element to loop over.
       currentBoss.display();
     }
-
+    
+    handleBullets();
+    handleBadBullets();
+    
     handleEnemies();
     handleBells();
-    handleBullets();
+    
 
     player1.update();
     player1.display();
@@ -191,7 +196,7 @@ void draw() {
     if (player1.dead == 0) {
       cooldown++;
       if (cooldown > frameRate/6.0 && shoot) {
-        bullets.add(new Projectile(player1.x, player1.y, 0, -10, PLAYER));
+        bullets.add(new Projectile(player1.x, player1.y, 0, -10));
         cooldown = 0;
       }
     }
@@ -333,25 +338,48 @@ void handleEnemies() {
         Projectile bullet = itera.next();
 
         if (enemy.collided(bullet)) {
-          itera.remove(); {
-          enemy.health--;
-          
-          if (enemy.health == 0) {
-            enemy.setDead();
+          itera.remove();
+          {
+            enemy.health--;
+
+            if (enemy.health == 0) {
+              enemy.setDead();
+            }
           }
+        }
+
+        if (enemy.collided(player1)) {
+          player1.setDead();
         }
       }
 
-      if (enemy.collided(player1)) {
-        player1.setDead();
-      }
+      enemy.update();
+      enemy.display();
     }
-
-    enemy.update();
-    enemy.display();
   }
 }
 
+
+void handleBadBullets() {
+  Iterator<Projectile> iter = badBullets.iterator();
+  while (iter.hasNext()) {
+    Projectile bullet = iter.next();
+
+    bullet.update();
+
+    if (bullet.touchingEdges()) {
+      iter.remove();
+      continue;
+    }
+
+    if (player1.collided(bullet)) {
+      iter.remove();
+      player1.setDead();
+    }
+
+    bullet.display();
+  }
+}
 
 void handleBells() {
   Iterator<Bell> iter = bells.iterator();

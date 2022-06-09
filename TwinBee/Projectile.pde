@@ -4,19 +4,17 @@ class Projectile{
   
   float x, y;
   float xVel, yVel;
-  int source;
   PImage sprite;
   
-  Projectile(float _x, float _y, int _xVel, int _yVel, int _source){
-    this(_x, _y, float(_xVel), float(_yVel), _source);
+  Projectile(float _x, float _y, int _xVel, int _yVel){
+    this(_x, _y, float(_xVel), float(_yVel));
   }
   
-  Projectile(float _x, float _y, float _xVel, float _yVel, int _source){
+  Projectile(float _x, float _y, float _xVel, float _yVel){
     x = _x;
     y = _y;
     xVel = _xVel;
     yVel = _yVel;
-    source = _source;
     sprite = BULLETSPRITE;
   }
   

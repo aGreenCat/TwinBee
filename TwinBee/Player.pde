@@ -73,4 +73,8 @@ class Player {
   void setDead() {
     dead = 1;
   }
+  
+  boolean collided(Projectile p) {
+    return abs(p.x - x) < 22 && abs(p.y - y) < 22;
+  }
 }
