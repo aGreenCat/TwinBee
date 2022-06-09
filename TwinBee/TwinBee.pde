@@ -51,8 +51,14 @@ Set<Enemy> enemies;
 Set<Bell> bells;
 
 
-int nextBoss = 120;
+int nextBoss = 90*15;
 BossA A;
+
+Boss currentBoss;
+
+
+//for health bar
+float hbw;
 
 PImage background[];
 float BACK_SCROLL = 0.5;
@@ -166,6 +172,9 @@ void draw() {
     if (BOSS) {
       fill(#55000000);
       rect(0, 0, width, height);
+      //just so it's over the overlay
+      //should be fine, only one element to loop over.
+      currentBoss.display();
     }
 
     player1.update();
@@ -176,7 +185,7 @@ void draw() {
     }
 
 
-    if (player1.dead == 0) {
+    if (player1.dead == 0 && (!BOSS || !currentBoss.ENTERING)) {
       cooldown++;
       if (cooldown > frameRate/6.0 && shoot) {
         bullets.add(new Projectile(player1.x, player1.y, 0, -10, PLAYER));
@@ -188,15 +197,24 @@ void draw() {
     textSize(20);
     textAlign(LEFT, BASELINE);
     text(scroll, 35, 50);
-    
-    
+
+
     if (scroll > nextBoss) {
       BOSS = true;
       A = new BossA();
       enemies.add(A);
-      
+      currentBoss = A;
+
       nextBoss += 60*90;
     }
+    
+    if (BOSS) {
+      hbw += 0.1*(width*currentBoss.health/currentBoss.maxHealth - hbw);
+      float g = currentBoss.health * 1.0/currentBoss.maxHealth;
+      fill(color(255-g*170, 85+g*170, 100));
+      rect(0, 0, hbw, 6);
+    }
+    
   } else {
     textAlign(CENTER, CENTER);
     textSize(17);
@@ -287,6 +305,10 @@ void handleEnemies() {
     Enemy enemy = iter.next();
 
     if (enemy.dead == 2) {
+      if (enemy.equals(currentBoss)) {
+        BOSS = false;
+        nextEnemy = (int) random(frameCount + frameRate*2, frameCount + frameRate*10);
+      }
       iter.remove();
       continue;
     }
@@ -304,9 +326,17 @@ void handleEnemies() {
         Projectile bullet = itera.next();
 
         if (enemy.collided(bullet)) {
-          enemy.setDead();
-
-          itera.remove();
+          if (enemy.equals(currentBoss)) {
+            enemy.health--;
+            itera.remove();
+            
+            if (enemy.health == 0) {
+              enemy.setDead();
+            }
+          } else {
+            enemy.setDead();
+            itera.remove();
+          }
         }
       }
 

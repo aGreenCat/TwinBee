@@ -5,7 +5,10 @@ class Enemy {
   float xAcel, yAcel;
   PImage sprite;
   PImage sprites[];
-
+  
+  //for bosses only
+  int health;
+  
   PImage deaths[];
   int dead = 0;
 
@@ -21,11 +24,12 @@ class Enemy {
     xAcel = 0;
     yAcel = 0;
     
-    deaths = new PImage[4];
+    deaths = new PImage[5];
     deaths[0] = DEATH0;
     deaths[1] = DEATH1;
     deaths[2] = DEATH2;
     deaths[3] = DEATH3;
+    deaths[4] = createImage(0, 0, 0);
   }
 
   void display() {
@@ -52,7 +56,7 @@ class Enemy {
 
   void setDead() {
     dead = 1;
-    f = 0;
+    f = 10;
   }
 
   boolean atBottom() {
@@ -67,7 +71,7 @@ class Enemy {
     return sqrt(sq(p.x-x) + sq(p.y-y)) < 16;
   }
 
-  private void handleFrames() {
+  void handleFrames() {
     f++;
     
     if (dead == 0) {
@@ -79,11 +83,13 @@ class Enemy {
     }
     
     if (dead == 1) {
+      if (f > 10) {
         frame++;
         sprite = deaths[frame];
         f = 0;
+      }
       
-      if (frame == 3) {
+      if (frame == deaths.length - 1) {
         dead = 2;
       }
     }

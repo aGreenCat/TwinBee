@@ -1,8 +1,9 @@
 class Boss extends Enemy {
   boolean ENTERING = true;
+  float maxHealth;
  
   Boss() {
-    super(width/2, -29);
+    super(width/2, -120);
     yVel = 2;
   }
 
@@ -15,6 +16,5 @@ class Boss extends Enemy {
       ENTERING = false;
     }
   }
-
   
 }
