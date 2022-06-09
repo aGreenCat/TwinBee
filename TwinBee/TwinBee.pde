@@ -51,7 +51,7 @@ Set<Enemy> enemies;
 Set<Bell> bells;
 
 
-int nextBoss = 90*15;
+int nextBoss = 90*5;
 BossA A;
 
 Boss currentBoss;
@@ -185,7 +185,7 @@ void draw() {
     }
 
 
-    if (player1.dead == 0 && (!BOSS || !currentBoss.ENTERING)) {
+    if (player1.dead == 0) {
       cooldown++;
       if (cooldown > frameRate/6.0 && shoot) {
         bullets.add(new Projectile(player1.x, player1.y, 0, -10, PLAYER));
@@ -207,14 +207,13 @@ void draw() {
 
       nextBoss += 60*90;
     }
-    
+
     if (BOSS) {
       hbw += 0.1*(width*currentBoss.health/currentBoss.maxHealth - hbw);
       float g = currentBoss.health * 1.0/currentBoss.maxHealth;
       fill(color(255-g*170, 85+g*170, 100));
       rect(0, 0, hbw, 6);
     }
-    
   } else {
     textAlign(CENTER, CENTER);
     textSize(17);
@@ -254,16 +253,17 @@ void handleBullets() {
       continue;
     }
 
+    if (!BOSS) {
+      Iterator<Cloud> itera = clouds.iterator();
+      while (itera.hasNext()) {
+        Cloud cloud = itera.next();
 
-    Iterator<Cloud> itera = clouds.iterator();
-    while (itera.hasNext()) {
-      Cloud cloud = itera.next();
+        if (cloud.bell && cloud.collided(bullet)) {
+          cloud.bell = false;
+          bells.add(new Bell(cloud));
 
-      if (cloud.bell && cloud.collided(bullet)) {
-        cloud.bell = false;
-        bells.add(new Bell(cloud));
-
-        iter.remove();
+          iter.remove();
+        }
       }
     }
 
@@ -327,11 +327,13 @@ void handleEnemies() {
 
         if (enemy.collided(bullet)) {
           if (enemy.equals(currentBoss)) {
-            enemy.health--;
             itera.remove();
-            
-            if (enemy.health == 0) {
-              enemy.setDead();
+            if (!currentBoss.ENTERING) {
+              enemy.health--;
+
+              if (enemy.health == 0) {
+                enemy.setDead();
+              }
             }
           } else {
             enemy.setDead();

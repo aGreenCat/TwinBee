@@ -3,7 +3,7 @@ class Boss extends Enemy {
   float maxHealth;
  
   Boss() {
-    super(width/2, -120);
+    super(width/2, -320);
     yVel = 2;
   }
 

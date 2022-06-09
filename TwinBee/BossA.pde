@@ -36,7 +36,7 @@ class BossA extends Boss {
         f = 0;
       }
       println(frame);
-      if (frame == 43) {
+      if (frame == 24) {
         dead = 2;
       }
     }
