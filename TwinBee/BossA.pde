@@ -23,7 +23,7 @@ class BossA extends Boss {
       theta++;
     }
     
-    if (b > nextB) {
+    if (dead == 0 && b > nextB) {
       float hyp = sqrt(sq(player1.x - x) + sq(player1.y - y));
       
       badBullets.add(new Projectile(x, y, 3*(player1.x - x)/hyp, 3*(player1.y - y)/hyp));
@@ -38,7 +38,8 @@ class BossA extends Boss {
 
   void handleFrames() {
     f++;
-
+    
+    
     if (dead == 1) {
       if (f > 10) {
         frame++;

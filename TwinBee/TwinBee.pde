@@ -177,13 +177,13 @@ void draw() {
       //should be fine, only one element to loop over.
       currentBoss.display();
     }
-    
+
     handleBullets();
     handleBadBullets();
-    
+
     handleEnemies();
     handleBells();
-    
+
 
     player1.update();
     player1.display();
@@ -227,6 +227,10 @@ void draw() {
       rect(0, 0, hbw, 6);
     }
   } else {
+    //needed so that the menu time doesn't factor into when the boss spawns.
+    bossAspawn ++;
+
+
     textAlign(CENTER, CENTER);
     textSize(17);
     noStroke();
@@ -238,6 +242,7 @@ void draw() {
       if (mousePressed) mode = ONE_PLAYER_GAME;
     }
     rect(width/2-75, 250, 150, 60, 5);
+
     fill(#e0f070ca);
     if (abs(mouseX - width/2) < 75 && abs(mouseY - 350) < 30) {
       fill(#f070ca);
@@ -305,11 +310,9 @@ void handleClouds() {
 }
 
 void handleEnemies() {
-  if (!BOSS) {
-    if (frameCount > nextEnemy) {
-      spawnStrawberries();
-      nextEnemy = (int) random(frameCount + frameRate*2, frameCount + frameRate*10);
-    }
+  if (scroll > nextEnemy) {
+    spawnStrawberries();
+    nextEnemy = (int) random(frameCount + frameRate*2, frameCount + frameRate*10);
   }
 
   Iterator<Enemy> iter = enemies.iterator();
@@ -347,15 +350,14 @@ void handleEnemies() {
             }
           }
         }
-
-        if (enemy.collided(player1)) {
-          player1.setDead();
-        }
       }
-
-      enemy.update();
-      enemy.display();
+      if (enemy.collided(player1)) {
+        player1.setDead();
+      }
     }
+
+    enemy.update();
+    enemy.display();
   }
 }
 
@@ -451,7 +453,7 @@ void keyPressed() {
   }
 
   if (key == ' ') {
-    BOSS = !BOSS;
+    currentBoss.setDead();
   }
 }
 
