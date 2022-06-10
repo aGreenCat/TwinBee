@@ -405,6 +405,8 @@ void handleBells() {
     bell.update();
 
     if (bell.collided(player1)) {
+      player1.powerUp(bell.type);
+      
       iter.remove();
       continue;
     }

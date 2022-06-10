@@ -10,11 +10,11 @@ class Bell {
   
   float POWER_UP_RATE = 0.12;
 
-  int BNORMAL = 0;
-  int BSPEED = 1;
-  int BBULLET = 2;
-  int BSHIELD = 3;
-  int BCLONE = 4;
+  static final int BNORMAL = 0;
+  static final int BSPEED = 1;
+  static final int BBULLET = 2;
+  static final int BSHIELD = 3;
+  static final int BCONE = 4;
   
   int type;
 

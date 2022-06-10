@@ -1,6 +1,11 @@
 class Player {
-  static final float xVel = 2;
-  static final float yVel = 2;
+  int shootMode = 1;
+  
+  boolean cone;
+  
+  
+  float xVel = 2;
+  float yVel = 2;
 
   float x, y;
   int playerNum;
@@ -76,6 +81,17 @@ class Player {
       }
     }
   }
+  
+  void powerUp(int t) {
+    if (t == Bell.BSPEED) {
+      xVel += 0.5;
+      yVel += 0.5;
+    }
+    if (t == Bell.BBULLET) {
+      shootMode++;
+      if (shootMode > 3) shootMode = 3;
+    }
+  } 
 
   void setDead() {
     dead = 1;
