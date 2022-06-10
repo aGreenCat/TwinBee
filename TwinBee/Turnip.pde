@@ -24,7 +24,7 @@ class Turnip extends Enemy {
     if (!shot && abs(player1.x - x) < 100 && player1.y - y < -100) {
       float hyp = sqrt(sq(player1.x - x) + sq(player1.y - y));
       
-      badBullets.add(new Projectile(x, y, 3*(player1.x - x)/hyp, 3*(player1.y - y)/hyp));
+      badBullets.add(new Projectile(x, y, 2*(player1.x - x)/hyp, 2*(player1.y - y)/hyp));
       shot = true;
     }
   }
