@@ -1,11 +1,3 @@
-/*
-PROJECT V0 DEMO
- 
- USE WASD to move.
- N to shoot.
- 
- Clouds currently do nothings and you do not die.
- */
 import java.util.*;
 
 //Mode
@@ -13,7 +5,7 @@ int mode;
 int MENU = 0;
 int ONE_PLAYER_GAME = 1;
 int TWO_PLAYER_GAME = 2;
-boolean BOSS = false;
+boolean BOSS;
 
 PImage banner;
 
@@ -52,7 +44,7 @@ Set<Enemy> enemies;
 Set<Bell> bells;
 
 
-int bossAspawn = 90*10;
+int bossAspawn;
 BossA A;
 
 Boss currentBoss;
@@ -144,23 +136,31 @@ void setup() {
   frameRate(90);
 
   loadImages();
-
-  mode = MENU;
-
+  
   keys = new boolean[numKeys];
 
-  player1 = new Player(width/2, 400, 1);
-  bullets = new HashSet<Projectile>();
-  badBullets = new HashSet<Projectile>();
-  clouds = new HashSet<Cloud>();
-  enemies = new HashSet<Enemy>();
-  bells = new HashSet<Bell>();
+
+  resetGame();
 
   background = new PImage[3];
   background[0] = loadImage("back0.png");
   background[1] = loadImage("back1.png");
   background[2] = loadImage("back2.png");
 }
+
+void resetGame() {
+  mode = MENU;
+  
+  bossAspawn = scroll + 90*10;
+  BOSS = false;
+  
+  bullets = new HashSet<Projectile>();
+  badBullets = new HashSet<Projectile>();
+  clouds = new HashSet<Cloud>();
+  enemies = new HashSet<Enemy>();
+  bells = new HashSet<Bell>();
+}
+
 
 void draw() {
   background(0);
@@ -202,6 +202,9 @@ void draw() {
         bullets.add(new Projectile(player1.x, player1.y, 0, -10));
         cooldown = 0;
       }
+    } else if (player1.dead == 2) {
+      
+      resetGame();
     }
 
     fill(255);
@@ -243,6 +246,7 @@ void draw() {
     if (abs(mouseX - width/2) < 75 && abs(mouseY - 275) < 30) {
       fill(#f070ca);
       if (mousePressed) mode = ONE_PLAYER_GAME;
+      player1 = new Player(width/2, 400, 1);
     }
     rect(width/2-75, 250, 150, 60, 5);
 
@@ -250,6 +254,7 @@ void draw() {
     if (abs(mouseX - width/2) < 75 && abs(mouseY - 350) < 30) {
       fill(#f070ca);
       if (mousePressed) mode = TWO_PLAYER_GAME;
+      player1 = new Player(width/2, 400, 1);
     }
     rect(width/2-75, 325, 150, 60, 5);
 
@@ -319,7 +324,7 @@ void handleEnemies() {
     } else {
       spawnTurnips();
     }
-    nextEnemy = (int) random(frameCount + frameRate*2, frameCount + frameRate*10);
+    nextEnemy = (int) random(frameCount + frameRate*1, frameCount + frameRate*3);
   }
 
   Iterator<Enemy> iter = enemies.iterator();
@@ -329,7 +334,7 @@ void handleEnemies() {
     if (enemy.dead == 2) {
       if (enemy.equals(currentBoss)) {
         BOSS = false;
-        nextEnemy = (int) random(frameCount + frameRate*2, frameCount + frameRate*10);
+        nextEnemy = (int) random(frameCount + frameRate*0.5, frameCount + frameRate*3);
       }
       iter.remove();
       continue;
@@ -359,7 +364,9 @@ void handleEnemies() {
         }
       }
       if (enemy.collided(player1)) {
-        player1.setDead();
+        if (player1.dead == 0) {
+          player1.setDead();
+        }
       }
     }
 

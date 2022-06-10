@@ -12,6 +12,7 @@ class Player {
   int f_rate = 6;
   int f = 0;
   int frame = 0;
+  int deadr = 0;
 
   Player(float _x, float _y, int _pn) {
     x = _x;
@@ -20,7 +21,7 @@ class Player {
 
     if (playerNum == 1)
       sprite = PLAYERSPRITE1;
-    else 
+    else
       sprite = PLAYERSPRITE2;
     deaths = new PImage[2];
     deaths[0] = DEADPLAYER0;
@@ -28,7 +29,7 @@ class Player {
   }
 
   void display() {
-    if (dead != 6)
+    if (dead != 2 && deadr < 5)
       image(sprite, x-16, y-16, 32, 32);
   }
 
@@ -57,23 +58,30 @@ class Player {
   void update() {
     if (dead == 0) {
       move();
-    } else if (dead < 6) {
+    } else if (dead == 1) {
       f++;
 
       if (f > f_rate) {
-        frame = 1 - frame;
-        sprite = deaths[frame];
+        if (deadr < 5) {
+          frame = 1 - frame;
+          sprite = deaths[frame];
 
-        f = 0;
-        dead++;
+          f = 0;
+        }
+        deadr++;
+      }
+
+      if (deadr > 100) {
+        dead = 2;
       }
     }
   }
 
   void setDead() {
     dead = 1;
+    f = 0;
   }
-  
+
   boolean collided(Projectile p) {
     return abs(p.x - x) < 22 && abs(p.y - y) < 22;
   }
