@@ -16,6 +16,8 @@ class Strawberry extends Enemy {
       xVel = 2.5;
     }
     yVel = 2.5;
+    
+    f_rate = 10;
   }
 
   void changes() {

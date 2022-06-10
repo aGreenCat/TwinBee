@@ -71,6 +71,7 @@ PImage PLAYERSPRITE1, PLAYERSPRITE2;
 PImage DEADPLAYER0, DEADPLAYER1;
 PImage BULLETSPRITE;
 PImage STRAWBERRYSPRITE0, STRAWBERRYSPRITE1;
+PImage TURNIP0, TURNIP1;
 PImage BOSSASHEILD;
 
 void loadImages() {
@@ -90,6 +91,8 @@ void loadImages() {
   STRAWBERRYSPRITE0 = loadImage("enemy_strawberry_0.png");
   STRAWBERRYSPRITE1 = loadImage("enemy_strawberry_1.png");
   BOSSASHEILD = loadImage("bossA_sheilds.png");
+  TURNIP0 = loadImage("enemy_turnip_0.png");
+  TURNIP1 = loadImage("enemy_turnip_1.png");
 
   //bells
   color colors[];
@@ -311,7 +314,11 @@ void handleClouds() {
 
 void handleEnemies() {
   if (scroll > nextEnemy) {
-    spawnStrawberries();
+    if (random(1) < 0.5) {
+      spawnStrawberries();
+    } else {
+      spawnTurnips();
+    }
     nextEnemy = (int) random(frameCount + frameRate*2, frameCount + frameRate*10);
   }
 
@@ -430,6 +437,25 @@ void spawnStrawberries() {
     xSpawn = min(xSpawn, 496);
     for (int i = 0; i < 5; i++) {
       enemies.add(new Strawberry(xSpawn+i*23, -16-i*23));
+    }
+  }
+}
+
+
+void spawnTurnips() {
+  float xSpawn = player1.x;
+
+  if (player1.x > width/2) {
+    xSpawn -= player1.y + 16;
+    xSpawn = max(xSpawn, 16);
+    for (int i = 0; i < 3; i++) {
+      enemies.add(new Turnip(xSpawn-i*23, -16-i*23));
+    }
+  } else {
+    xSpawn += player1.y + 16;
+    xSpawn = min(xSpawn, 496);
+    for (int i = 0; i < 3; i++) {
+      enemies.add(new Turnip(xSpawn+i*23, -16-i*23));
     }
   }
 }

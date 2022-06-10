@@ -12,7 +12,7 @@ class Enemy {
   PImage deaths[];
   int dead = 0;
 
-  float f_rate = frameRate/10.0;
+  float f_rate = 10;
   int f = 0;
   int frame = 0;
 
