@@ -84,8 +84,8 @@ class Player {
   
   void powerUp(int t) {
     if (t == Bell.BSPEED) {
-      xVel += 0.5;
-      yVel += 0.5;
+      xVel += 0.2;
+      yVel += 0.2;
     }
     if (t == Bell.BBULLET) {
       shootMode++;

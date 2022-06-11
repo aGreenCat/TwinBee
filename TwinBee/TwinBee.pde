@@ -151,7 +151,7 @@ void setup() {
 void resetGame() {
   mode = MENU;
   
-  bossAspawn = scroll + 90*10;
+  bossAspawn = scroll + 90*2;
   BOSS = false;
   
   bullets = new HashSet<Projectile>();
@@ -176,9 +176,6 @@ void draw() {
     if (BOSS) {
       fill(#55000000);
       rect(0, 0, width, height);
-      //just so it's over the overlay
-      //should be fine, only one element to loop over.
-      currentBoss.display();
     }
 
     handleBullets();
@@ -335,7 +332,7 @@ void handleEnemies() {
     } else {
       spawnTurnips();
     }
-    nextEnemy = (int) random(frameCount + frameRate*2, frameCount + frameRate*3);
+    nextEnemy = (int) random(scroll + frameRate*2, scroll + frameRate*3);
   }
 
   Iterator<Enemy> iter = enemies.iterator();
@@ -345,7 +342,7 @@ void handleEnemies() {
     if (enemy.dead == 2) {
       if (enemy.equals(currentBoss)) {
         BOSS = false;
-        nextEnemy = (int) random(frameCount + frameRate*0.5, frameCount + frameRate*3);
+        nextEnemy = (int) random(scroll + frameRate*0.5, scroll + frameRate*3);
       }
       iter.remove();
       continue;
