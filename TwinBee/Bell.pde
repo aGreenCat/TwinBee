@@ -10,11 +10,11 @@ class Bell {
   
   float POWER_UP_RATE = 0.12;
 
-  static final int BNORMAL = 0;
-  static final int BSPEED = 1;
-  static final int BBULLET = 2;
-  static final int BSHIELD = 3;
-  static final int BCONE = 4;
+  static final int BNORMAL = 0; //no powerup - get points           //yellow
+  static final int BSPEED = 1;  // speed up                         //blue
+  static final int BBULLET = 2; //more bullets                      //white
+  static final int BSHIELD = 3; //gain shield                       //green
+  static final int BCONE = 4;   //powerup for shooting in a cone    //red
   
   int type;
 

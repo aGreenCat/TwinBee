@@ -90,14 +90,14 @@ void loadImages() {
   color colors[];
 
   colors = new color[8];
-  colors[0] = #23B4F5;
-  colors[1] = #2F91BC;
-  colors[2] = #FFFFFF;
-  colors[3] = #CCCCCC;
-  colors[4] = #47F248;
-  colors[5] = #409B41;
-  colors[6] = #E83521;
-  colors[7] = #791E14;
+  colors[0] = #23B4F5; //blue
+  colors[1] = #2F91BC; //dark blue
+  colors[2] = #FFFFFF; //white
+  colors[3] = #CCCCCC; //gray
+  colors[4] = #47F248; //green
+  colors[5] = #409B41; //dark green
+  colors[6] = #E83521; //red
+  colors[7] = #791E14; //dark red
 
   BELLSPRITES = new PImage[15];
   BELLSPRITES[0] = loadImage("bell.png");
@@ -199,7 +199,18 @@ void draw() {
     if (player1.dead == 0) {
       cooldown++;
       if (cooldown > frameRate/6.0 && shoot) {
-        bullets.add(new Projectile(player1.x, player1.y, 0, -10));
+        if (player1.shootMode == 1){
+          bullets.add(new Projectile(player1.x, player1.y, 0, -10));
+        }
+        if (player1.shootMode == 2){
+          bullets.add(new Projectile(player1.x-7.5, player1.y, 0, -10));
+          bullets.add(new Projectile(player1.x+7.5, player1.y, 0, -10));
+        }
+        if (player1.shootMode == 3){
+          bullets.add(new Projectile(player1.x, player1.y, 0, -10));
+          bullets.add(new Projectile(player1.x-15, player1.y, 0, -10));
+          bullets.add(new Projectile(player1.x+15, player1.y, 0, -10));
+        }
         cooldown = 0;
       }
     } else if (player1.dead == 2) {
@@ -324,7 +335,7 @@ void handleEnemies() {
     } else {
       spawnTurnips();
     }
-    nextEnemy = (int) random(frameCount + frameRate*1, frameCount + frameRate*3);
+    nextEnemy = (int) random(frameCount + frameRate*2, frameCount + frameRate*3);
   }
 
   Iterator<Enemy> iter = enemies.iterator();
