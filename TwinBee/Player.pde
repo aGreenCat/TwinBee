@@ -57,6 +57,22 @@ class Player {
         if (y > height-16) y = height-16;
       }
     } else {
+      if (keys[LEFTMOVETWO]) {
+        x-=xVel*FRAMERATE/frameRate;
+        if (x < 16) x = 16;
+      }
+      if (keys[RIGHTMOVETWO]) {
+        x+=xVel*FRAMERATE/frameRate;
+        if (x > width-16) x = width-16;
+      }
+      if (keys[UPMOVETWO]) {
+        y-=yVel*FRAMERATE/frameRate;
+        if (y < 16) y = 16;
+      }
+      if (keys[DOWNMOVETWO]) {
+        y+=yVel*FRAMERATE/frameRate;
+        if (y > height-16) y = height-16;
+      }
     }
   }
 

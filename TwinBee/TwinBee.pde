@@ -28,15 +28,16 @@ int nextEnemy = 0;
 int MAX_CLOUDS = 3;
 int nextCloud = 0;
 
-int cooldown = 5;
+int cooldown1 = 5;
+int cooldown2 = 5;
 
 int scroll;
 
-boolean shoot;
+boolean shoot1, shoot2;
 boolean[] keys;
-int numKeys = 4;
+int numKeys = 8;
 
-Player player1;
+Player player1, player2;
 Set<Projectile> bullets;
 Set<Projectile> badBullets;
 Set<Cloud> clouds;
@@ -136,7 +137,7 @@ void setup() {
   frameRate(90);
 
   loadImages();
-  
+
   keys = new boolean[numKeys];
 
 
@@ -150,10 +151,10 @@ void setup() {
 
 void resetGame() {
   mode = MENU;
-  
+
   bossAspawn = scroll + 90*2;
   BOSS = false;
-  
+
   bullets = new HashSet<Projectile>();
   badBullets = new HashSet<Projectile>();
   clouds = new HashSet<Cloud>();
@@ -188,30 +189,50 @@ void draw() {
     player1.update();
     player1.display();
     if (mode == TWO_PLAYER_GAME) {
-      //player2.update();
-      //player2. display();
+      player2.update();
+      player2. display();
     }
 
 
     if (player1.dead == 0) {
-      cooldown++;
-      if (cooldown > frameRate/6.0 && shoot) {
-        if (player1.shootMode == 1){
+      cooldown1++;
+      if (cooldown1 > frameRate/6.0 && shoot1) {
+        if (player1.shootMode == 1) {
           bullets.add(new Projectile(player1.x, player1.y, 0, -10));
         }
-        if (player1.shootMode == 2){
+        if (player1.shootMode == 2) {
           bullets.add(new Projectile(player1.x-7.5, player1.y, 0, -10));
           bullets.add(new Projectile(player1.x+7.5, player1.y, 0, -10));
         }
-        if (player1.shootMode == 3){
+        if (player1.shootMode == 3) {
           bullets.add(new Projectile(player1.x, player1.y, 0, -10));
           bullets.add(new Projectile(player1.x-15, player1.y, 0, -10));
           bullets.add(new Projectile(player1.x+15, player1.y, 0, -10));
         }
-        cooldown = 0;
+        cooldown1 = 0;
       }
-    } else if (player1.dead == 2) {
-      
+    }
+    if (mode == TWO_PLAYER_GAME && player2.dead == 0) {
+      cooldown2++;
+      if (cooldown2 > frameRate/6.0 && shoot2) {
+        if (player2.shootMode == 1) {
+          bullets.add(new Projectile(player2.x, player2.y, 0, -10));
+        }
+        if (player2.shootMode == 2) {
+          bullets.add(new Projectile(player2.x-7.5, player2.y, 0, -10));
+          bullets.add(new Projectile(player2.x+7.5, player2.y, 0, -10));
+        }
+        if (player2.shootMode == 3) {
+          bullets.add(new Projectile(player2.x, player2.y, 0, -10));
+          bullets.add(new Projectile(player2.x-15, player2.y, 0, -10));
+          bullets.add(new Projectile(player2.x+15, player2.y, 0, -10));
+        }
+        cooldown2 = 0;
+      }
+    }
+
+
+    if (player1.dead == 2 && (mode == ONE_PLAYER_GAME || player2.dead == 2)) {
       resetGame();
     }
 
@@ -262,7 +283,8 @@ void draw() {
     if (abs(mouseX - width/2) < 75 && abs(mouseY - 350) < 30) {
       fill(#f070ca);
       if (mousePressed) mode = TWO_PLAYER_GAME;
-      player1 = new Player(width/2, 400, 1);
+      player1 = new Player(width/3.0, 400, 1);
+      player2 = new Player(width*2.0/3, 400, 2);
     }
     rect(width/2-75, 325, 150, 60, 5);
 
@@ -371,9 +393,14 @@ void handleEnemies() {
           }
         }
       }
-      if (enemy.collided(player1)) {
+      if (player1.dead == 0 && enemy.collided(player1)) {
         if (player1.dead == 0) {
           player1.setDead();
+        }
+      }
+      if (mode == TWO_PLAYER_GAME && player2.dead == 0 && enemy.collided(player2)) {
+        if (player2.dead == 0) {
+          player2.setDead();
         }
       }
     }
@@ -396,9 +423,13 @@ void handleBadBullets() {
       continue;
     }
 
-    if (player1.collided(bullet)) {
+    if (player1.dead == 0 && player1.collided(bullet)) {
       iter.remove();
       player1.setDead();
+    }
+    if (mode == TWO_PLAYER_GAME && player2.dead == 0 && player2.collided(bullet)) {
+      iter.remove();
+      player2.setDead();
     }
 
     bullet.display();
@@ -412,9 +443,15 @@ void handleBells() {
 
     bell.update();
 
-    if (bell.collided(player1)) {
+    if (player1.dead == 0 && bell.collided(player1)) {
       player1.powerUp(bell.type);
-      
+
+      iter.remove();
+      continue;
+    }
+    if (mode == TWO_PLAYER_GAME && player2.dead == 0 && bell.collided(player2)) {
+      player2.powerUp(bell.type);
+
       iter.remove();
       continue;
     }
@@ -441,7 +478,17 @@ void handleBells() {
 }
 
 void spawnStrawberries() {
-  float xSpawn = player1.x;
+  float xSpawn;
+  if (mode == ONE_PLAYER_GAME || player2.dead != 0 || random(1) < 0.5) {
+    if (mode == TWO_PLAYER_GAME && player1.dead != 0) {
+      xSpawn = player2.x;
+    } else {
+      xSpawn = player1.x;
+    }
+  } else {
+    xSpawn = player2.x;
+  }
+  
 
   if (player1.x > width/2) {
     xSpawn -= player1.y + 16;
@@ -460,7 +507,16 @@ void spawnStrawberries() {
 
 
 void spawnTurnips() {
-  float xSpawn = player1.x;
+  float xSpawn;
+  if (mode == ONE_PLAYER_GAME || player2.dead != 0 || random(1) < 0.5) {
+    if (mode == TWO_PLAYER_GAME && player1.dead != 0) {
+      xSpawn = player2.x;
+    } else {
+      xSpawn = player1.x;
+    }
+  } else {
+    xSpawn = player2.x;
+  }
 
   if (player1.x > width/2) {
     xSpawn -= player1.y + 16;
@@ -493,11 +549,24 @@ void keyPressed() {
   }
 
   if (key == 'n') {
-    shoot = true;
+    shoot1 = true;
   }
 
-  if (key == ' ') {
-    currentBoss.setDead();
+  if (keyCode==LEFT) {
+    keys[LEFTMOVETWO]=true;
+  }
+  if (keyCode==RIGHT) {
+    keys[RIGHTMOVETWO]=true;
+  }
+  if (keyCode==UP) {
+    keys[UPMOVETWO]=true;
+  }
+  if (keyCode==DOWN) {
+    keys[DOWNMOVETWO]=true;
+  }
+
+  if (key == '.') {
+    shoot2 = true;
   }
 }
 
@@ -515,6 +584,23 @@ void keyReleased() {
     keys[DOWNMOVEONE]=false;
   }
   if (key == 'n') {
-    shoot = false;
+    shoot1 = false;
+  }
+
+  if (keyCode==LEFT) {
+    keys[LEFTMOVETWO]=false;
+  }
+  if (keyCode==RIGHT) {
+    keys[RIGHTMOVETWO]=false;
+  }
+  if (keyCode==UP) {
+    keys[UPMOVETWO]=false;
+  }
+  if (keyCode==DOWN) {
+    keys[DOWNMOVETWO]=false;
+  }
+
+  if (key == '.') {
+    shoot2 = false;
   }
 }
