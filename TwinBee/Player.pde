@@ -107,6 +107,9 @@ class Player {
       shootMode++;
       if (shootMode > 3) shootMode = 3;
     }
+    if (t == Bell.BCONE) {
+      cone = true;
+    }
   } 
 
   void setDead() {
