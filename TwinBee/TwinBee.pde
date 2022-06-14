@@ -380,11 +380,14 @@ void handleClouds() {
 
 void handleEnemies() {
   if (scroll > nextEnemy) {
-    if (random(1) < 0.5) {
+    if (random(1) < 0.33) {
       spawnStrawberries();
-    } else {
+    } 
+    else if (random(1) < 0.33){
+      spawnTurnips();
+    }
+    else {
       spawnGrapes();
-      //spawnTurnips();
     }
     nextEnemy = (int) random(scroll + frameRate*2, scroll + frameRate*3);
   }
