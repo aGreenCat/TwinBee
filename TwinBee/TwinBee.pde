@@ -197,38 +197,48 @@ void draw() {
     if (player1.dead == 0) {
       cooldown1++;
       if (cooldown1 > frameRate/6.0 && shoot1) {
-        if (player1.shootMode != 2) {
+        if (player1.shootMode == 1){
           bullets.add(new Projectile(player1.x, player1.y, 0, -10));
         }
-        if (player1.shootMode != 1){
-          if (!player1.cone){
-            bullets.add(new Projectile(player1.x-15, player1.y, 0, -10));
-            bullets.add(new Projectile(player1.x+15, player1.y, 0, -10));
-          }
-          else {
-            bullets.add(new Projectile(player1.x, player1.y, cos(radians(80))*-10, sin(radians(80))*-10));
-            bullets.add(new Projectile(player1.x, player1.y, cos(radians(100))*-10, sin(radians(100))*-10));
-          }
+        if (player1.shootMode == 2){
+          bullets.add(new Projectile(player1.x-7.5, player1.y, 0, -10));
+          bullets.add(new Projectile(player1.x+7.5, player1.y, 0, -10));
         }
+        if (player1.shootMode == 3){
+          bullets.add(new Projectile(player1.x, player1.y, 0, -10));
+          bullets.add(new Projectile(player1.x-15, player1.y, 0, -10));
+          bullets.add(new Projectile(player1.x+15, player1.y, 0, -10));
+        }
+        
+        if(player1.cone){
+          bullets.add(new Projectile(player1.x, player1.y, cos(radians(80))*-10, sin(radians(80))*-10));
+          bullets.add(new Projectile(player1.x, player1.y, cos(radians(100))*-10, sin(radians(100))*-10));  
+        }
+        
         cooldown1 = 0;
       }
     }
     if (mode == TWO_PLAYER_GAME && player2.dead == 0) {
       cooldown2++;
       if (cooldown2 > frameRate/6.0 && shoot2) {
-        if (player2.shootMode != 2) {
+        if (player2.shootMode == 1) {
           bullets.add(new Projectile(player2.x, player2.y, 0, -10));
         }
-        if (player2.shootMode != 1){
-          if (!player2.cone){
-            bullets.add(new Projectile(player2.x-15, player2.y, 0, -10));
-            bullets.add(new Projectile(player2.x+15, player2.y, 0, -10));
-          }
-          else {
-            bullets.add(new Projectile(player2.x, player2.y, cos(radians(80))*-10, sin(radians(80))*-10));
-            bullets.add(new Projectile(player2.x, player2.y, cos(radians(100))*-10, sin(radians(100))*-10));
-          }
+        if (player2.shootMode == 2) {
+          bullets.add(new Projectile(player2.x-7.5, player2.y, 0, -10));
+          bullets.add(new Projectile(player2.x+7.5, player2.y, 0, -10));
         }
+        if (player2.shootMode == 3) {
+          bullets.add(new Projectile(player2.x, player2.y, 0, -10));
+          bullets.add(new Projectile(player2.x-15, player2.y, 0, -10));
+          bullets.add(new Projectile(player2.x+15, player2.y, 0, -10));
+        }
+        
+        if(player2.cone){
+          bullets.add(new Projectile(player2.x, player2.y, cos(radians(80))*-10, sin(radians(80))*-10));
+          bullets.add(new Projectile(player2.x, player2.y, cos(radians(100))*-10, sin(radians(100))*-10));  
+        }
+        
         cooldown2 = 0;
       }
     }
