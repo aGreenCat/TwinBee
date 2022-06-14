@@ -383,7 +383,7 @@ void handleEnemies() {
     if (random(1) < 0.33) {
       spawnStrawberries();
     } 
-    else if (random(1) < 0.33){
+    else if (random(1) < 0.5){
       spawnTurnips();
     }
     else {
