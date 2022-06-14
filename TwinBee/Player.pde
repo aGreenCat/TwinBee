@@ -99,15 +99,18 @@ class Player {
   }
   
   void powerUp(int t) {
-    if (t == Bell.BSPEED) {
+    if (t == Bell.BNORMAL){
+      score += 500;
+    }
+    else if (t == Bell.BSPEED) {
       xVel += 0.2;
       yVel += 0.2;
     }
-    if (t == Bell.BBULLET) {
+    else if (t == Bell.BBULLET) {
       shootMode++;
       if (shootMode > 3) shootMode = 3;
     }
-    if (t == Bell.BCONE) {
+    else if (t == Bell.BCONE) {
       cone = true;
     }
   } 

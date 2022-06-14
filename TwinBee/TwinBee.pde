@@ -33,6 +33,8 @@ int cooldown2 = 5;
 
 int scroll;
 
+int score = 0;
+
 boolean shoot1, shoot2;
 boolean[] keys;
 int numKeys = 8;
@@ -166,7 +168,7 @@ void resetGame() {
 void draw() {
   background(0);
 
-  if (!BOSS) scroll++;
+  if (!BOSS) scroll++; 
   image(background[0], 0, -992 + (scroll*BACK_SCROLL + 960) % 1440);
   image(background[1], 0, -992 + (scroll*BACK_SCROLL + 480) % 1440);
   image(background[2], 0, -992 + scroll*BACK_SCROLL % 1440);
@@ -251,7 +253,10 @@ void draw() {
     fill(255);
     textSize(20);
     textAlign(LEFT, BASELINE);
-    text(scroll, 35, 50);
+    if(!gameOver(mode) && !BOSS){
+      score++;
+    }
+    text(score, 35, 50); //marker
 
 
     if (scroll > bossAspawn) {
@@ -306,6 +311,16 @@ void draw() {
 
     image(banner, width/2-160, 75, 330, 90);
   }
+}
+
+boolean gameOver(int m){
+  if (m == ONE_PLAYER_GAME && player1.dead != 0){
+    return true;
+  }
+  if (m == TWO_PLAYER_GAME && player1.dead != 0 && player2.dead != 0){
+    return true;
+  }
+  return false;
 }
 
 void handleBullets() {

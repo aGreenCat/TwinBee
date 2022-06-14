@@ -15,6 +15,8 @@ class Enemy {
   float f_rate = 10;
   int f = 0;
   int frame = 0;
+  
+  int points = 0;
 
   Enemy(float _x, float _y) {
     x = _x;
