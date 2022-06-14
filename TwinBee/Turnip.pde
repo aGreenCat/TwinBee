@@ -18,6 +18,8 @@ class Turnip extends Enemy {
     yVel = 2;
 
     f_rate = 7;
+    
+    points = 100;
   }
 
   void changes() {

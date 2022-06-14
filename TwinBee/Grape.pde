@@ -1,42 +1,39 @@
-class Strawberry extends Enemy {
-
+class Grape extends Enemy {
   boolean changedDir = false;
+  boolean shot = false;
 
-  Strawberry(float _x, float _y) {
+  Grape(float _x, float _y) {
     super(_x, _y);
     sprites = new PImage[2];
-    sprites[0] = STRAWBERRYSPRITE0;
-    sprites[1] = STRAWBERRYSPRITE1;
+    sprites[0] = GRAPE0;
+    sprites[1] = GRAPE1;
 
     sprite = sprites[0];
 
     if (x > width/2) {
-      xVel = -2.5;
+      xVel = -1;
     } else {
-      xVel = 2.5;
+      xVel = 1;
     }
-    yVel = 2.5;
+    yVel = 2;
 
-    f_rate = 10;
-    
+    f_rate = 7;
+
     points = 100;
   }
 
   void changes() {
     if (player1.dead == 0) {
-      if (!changedDir && abs(player1.x - x) < 5 && player1.y - y < 128) {
-        xVel *= -1;
+      if (!changedDir && abs(y-player1.y) <= 130) {
+        yAcel = -0.10;
         changedDir = true;
-      }
-
-      float m = (player1.x - x)/(player1.y - y);
-      if (!changedDir && abs(xVel/yVel + m) < 0.05) {
-        if (player1.y < y) {
-          yVel*= -1;
-        } else {
-          xVel *= -1;
+        if (!shot) {
+          float hyp = sqrt(sq(player1.x - x) + sq(player1.y - y));
+          if (random(1) < 0.25) {
+            badBullets.add(new Projectile(x, y, 3*(player1.x - x)/hyp, 3*(player1.y - y)/hyp));
+          }
+          shot = true;
         }
-        changedDir = true;
       }
     }
 

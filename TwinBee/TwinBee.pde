@@ -1,4 +1,5 @@
 import java.util.*;
+import processing.sound.*;
 
 //Mode
 int mode;
@@ -67,6 +68,7 @@ PImage DEADPLAYER0, DEADPLAYER1;
 PImage BULLETSPRITE;
 PImage STRAWBERRYSPRITE0, STRAWBERRYSPRITE1;
 PImage TURNIP0, TURNIP1;
+PImage GRAPE0, GRAPE1;
 PImage BOSSASHEILD;
 
 void loadImages() {
@@ -88,6 +90,8 @@ void loadImages() {
   BOSSASHEILD = loadImage("bossA_sheilds.png");
   TURNIP0 = loadImage("enemy_turnip_0.png");
   TURNIP1 = loadImage("enemy_turnip_1.png");
+  GRAPE0 = loadImage("enemy_grape_0.png");
+  GRAPE1 = loadImage("enemy_grape_1.png");
 
   //bells
   color colors[];
@@ -256,7 +260,7 @@ void draw() {
     if(!gameOver(mode) && !BOSS){
       score++;
     }
-    text(score, 35, 50); //marker
+    text(score, 35, 50); 
 
 
     if (scroll > bossAspawn) {
@@ -379,7 +383,8 @@ void handleEnemies() {
     if (random(1) < 0.5) {
       spawnStrawberries();
     } else {
-      spawnTurnips();
+      spawnGrapes();
+      //spawnTurnips();
     }
     nextEnemy = (int) random(scroll + frameRate*2, scroll + frameRate*3);
   }
@@ -393,6 +398,7 @@ void handleEnemies() {
         BOSS = false;
         nextEnemy = (int) random(scroll + frameRate*0.5, scroll + frameRate*3);
       }
+      score += enemy.points;
       iter.remove();
       continue;
     }
@@ -560,6 +566,33 @@ void spawnTurnips() {
   }
 }
 
+void spawnGrapes(){
+  float xSpawn;
+  if (mode == ONE_PLAYER_GAME || player2.dead != 0 || random(1) < 0.5) {
+    if (mode == TWO_PLAYER_GAME && player1.dead != 0) {
+      xSpawn = player2.x;
+    } else {
+      xSpawn = player1.x;
+    }
+  } else {
+    xSpawn = player2.x;
+  }
+  
+
+  if (player1.x > width/2) {
+    xSpawn -= player1.y + 16;
+    xSpawn = max(xSpawn, 16);
+    for (int i = 0; i < 5; i++) {
+      enemies.add(new Grape(xSpawn-i*23, -16-i*23));
+    }
+  } else {
+    xSpawn += player1.y + 16;
+    xSpawn = min(xSpawn, 496);
+    for (int i = 0; i < 5; i++) {
+      enemies.add(new Grape(xSpawn+i*23, -16-i*23));
+    }
+  }
+}
 
 void keyPressed() {
   if (key=='a') {
