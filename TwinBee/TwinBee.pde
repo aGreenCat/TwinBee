@@ -1,4 +1,5 @@
 import java.util.*;
+import processing.sound.*;
 
 //Mode
 int mode;
@@ -141,12 +142,23 @@ void loadImages() {
   }
 }
 
+SoundFile backgroundM;
+SoundFile bossM;
+SoundFile shootSound;
+
+
+
 void setup() {
   size(512, 448);
   frameRate(90);
 
   loadImages();
-
+  
+  backgroundM = new SoundFile(this, "background.wav");
+  bossM = new SoundFile(this, "boss.wav");
+  shootSound = new SoundFile(this, "shoot.wav");
+  shootSound.amp(0.25);
+  
   keys = new boolean[numKeys];
 
 
@@ -159,6 +171,7 @@ void setup() {
 }
 
 void resetGame() {
+  backgroundM.stop();
   mode = MENU;
 
   bossAspawn = scroll + 90*60;
@@ -169,6 +182,7 @@ void resetGame() {
   clouds = new HashSet<Cloud>();
   enemies = new HashSet<Enemy>();
   bells = new HashSet<Bell>();
+  
 }
 
 
@@ -182,7 +196,9 @@ void draw() {
 
   handleClouds();
   if (mode != MENU) {
-
+    
+    
+    
     if (BOSS) {
       fill(#55000000);
       rect(0, 0, width, height);
@@ -206,6 +222,7 @@ void draw() {
     if (player1.dead == 0) {
       cooldown1++;
       if (cooldown1 > frameRate/6.0 && shoot1) {
+        shootSound.play();
         if (player1.shootMode == 1) {
           bullets.add(new Projectile(player1.x, player1.y, 0, -10));
         }
@@ -230,6 +247,7 @@ void draw() {
     if (mode == TWO_PLAYER_GAME && player2.dead == 0) {
       cooldown2++;
       if (cooldown2 > frameRate/6.0 && shoot2) {
+        shootSound.play();
         if (player2.shootMode == 1) {
           bullets.add(new Projectile(player2.x, player2.y, 0, -10));
         }
@@ -308,6 +326,7 @@ void draw() {
         mode = ONE_PLAYER_GAME;
         player1 = new Player(width/2, 400, 1);
         score = 0;
+        backgroundM.play();
       }
     }
     rect(width/2-75, 250, 150, 60, 5);
@@ -320,6 +339,7 @@ void draw() {
         player1 = new Player(width/3.0, 400, 1);
         player2 = new Player(width*2.0/3, 400, 2);
         score = 0;
+        backgroundM.play();
       }
     }
     rect(width/2-75, 325, 150, 60, 5);
@@ -424,6 +444,8 @@ void handleEnemies() {
     if (enemy.dead == 2) {
       if (enemy.equals(currentBoss)) {
         BOSS = false;
+        bossM.stop();
+        backgroundM.play();
         nextEnemy = (int) random(scroll + frameRate*0.5, scroll + frameRate*3);
       }
       score += enemy.points;

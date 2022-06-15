@@ -10,6 +10,9 @@ class BossA extends Boss {
     maxHealth = 30;
     health = maxHealth;
     b = nextB = 0;
+    
+    backgroundM.pause();
+    bossM.play();
   }
 
   void changes() {
