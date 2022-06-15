@@ -70,6 +70,7 @@ PImage STRAWBERRYSPRITE0, STRAWBERRYSPRITE1;
 PImage TURNIP0, TURNIP1;
 PImage GRAPE0, GRAPE1;
 PImage BOSSASHEILD;
+PImage SHIELDL, SHIELDR;
 
 void loadImages() {
   banner = loadImage("banner.png");
@@ -92,6 +93,8 @@ void loadImages() {
   TURNIP1 = loadImage("enemy_turnip_1.png");
   GRAPE0 = loadImage("enemy_grape_0.png");
   GRAPE1 = loadImage("enemy_grape_1.png");
+  SHIELDL = loadImage("sheildL.png");
+  SHIELDR = loadImage("sheildR.png");
 
   //bells
   color colors[];
@@ -281,6 +284,13 @@ void draw() {
       fill(color(255-g*170, 85+g*170, 100));
       rect(0, 0, hbw, 6);
     }
+    
+    if (mode == ONE_PLAYER_GAME) {
+      hbw += 0.1*(width*player1.shields*0.1 - hbw);
+      float g = player1.shields * 0.1;
+      fill(color(255-g*170, 85+g*170, 100));
+      rect(0, height-6, hbw, 6);
+    }
   } else {
     //needed so that the menu time doesn't factor into when the boss spawns.
     bossAspawn ++;
@@ -452,12 +462,22 @@ void handleEnemies() {
       }
       if (player1.dead == 0 && enemy.collided(player1)) {
         if (player1.dead == 0) {
-          player1.setDead();
+          if (player1.shields == 0) {
+            player1.setDead();
+          } else {
+            player1.shields--;
+            enemy.setDead();
+          }
         }
       }
       if (mode == TWO_PLAYER_GAME && player2.dead == 0 && enemy.collided(player2)) {
         if (player2.dead == 0) {
-          player2.setDead();
+          if (player2.shields == 0) {
+            player2.setDead();
+          } else {
+            player2.shields--;
+            enemy.setDead();
+          }
         }
       }
     }
@@ -482,11 +502,19 @@ void handleBadBullets() {
 
     if (player1.dead == 0 && player1.collided(bullet)) {
       iter.remove();
-      player1.setDead();
+      if (player1.shields == 0) {
+        player1.setDead();
+      } else {
+        player1.shields--;
+      }
     }
     if (mode == TWO_PLAYER_GAME && player2.dead == 0 && player2.collided(bullet)) {
       iter.remove();
-      player2.setDead();
+      if (player2.shields == 0) {
+        player2.setDead();
+      } else {
+        player2.shields--;
+      }
     }
 
     bullet.display();

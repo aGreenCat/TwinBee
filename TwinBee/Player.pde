@@ -2,7 +2,7 @@ class Player {
   int shootMode = 1;
   
   boolean cone;
-  
+  int shields;
   
   float xVel = 2;
   float yVel = 2;
@@ -31,11 +31,20 @@ class Player {
     deaths = new PImage[2];
     deaths[0] = DEADPLAYER0;
     deaths[1] = DEADPLAYER1;
+    
+    shields = 0;
   }
 
   void display() {
-    if (dead != 2 && deadr < 5)
+    if (dead != 2 && deadr < 5) {
       image(sprite, x-16, y-16, 32, 32);
+      
+      
+    if (shields > 0) {
+      image(SHIELDL, x-16 - 32, y-16, 32, 32);
+      image(SHIELDR, x-16 + 32, y-16, 32, 32);
+    }
+    }
   }
 
   void move() {
@@ -112,6 +121,9 @@ class Player {
     }
     else if (t == Bell.BCONE) {
       cone = true;
+    }
+    else if (t == Bell.BSHIELD) {
+      shields = 10;
     }
   } 
 
