@@ -1,5 +1,4 @@
 import java.util.*;
-import processing.sound.*;
 
 //Mode
 int mode;
@@ -34,7 +33,8 @@ int cooldown2 = 5;
 
 int scroll;
 
-int score = 0;
+int score;
+int highscore;
 
 boolean shoot1, shoot2;
 boolean[] keys;
@@ -158,7 +158,7 @@ void setup() {
 void resetGame() {
   mode = MENU;
 
-  bossAspawn = scroll + 90*2;
+  bossAspawn = scroll + 90*60;
   BOSS = false;
 
   bullets = new HashSet<Projectile>();
@@ -172,7 +172,7 @@ void resetGame() {
 void draw() {
   background(0);
 
-  if (!BOSS) scroll++; 
+  if (!BOSS) scroll++;
   image(background[0], 0, -992 + (scroll*BACK_SCROLL + 960) % 1440);
   image(background[1], 0, -992 + (scroll*BACK_SCROLL + 480) % 1440);
   image(background[2], 0, -992 + scroll*BACK_SCROLL % 1440);
@@ -203,24 +203,24 @@ void draw() {
     if (player1.dead == 0) {
       cooldown1++;
       if (cooldown1 > frameRate/6.0 && shoot1) {
-        if (player1.shootMode == 1){
+        if (player1.shootMode == 1) {
           bullets.add(new Projectile(player1.x, player1.y, 0, -10));
         }
-        if (player1.shootMode == 2){
+        if (player1.shootMode == 2) {
           bullets.add(new Projectile(player1.x-7.5, player1.y, 0, -10));
           bullets.add(new Projectile(player1.x+7.5, player1.y, 0, -10));
         }
-        if (player1.shootMode == 3){
+        if (player1.shootMode == 3) {
           bullets.add(new Projectile(player1.x, player1.y, 0, -10));
           bullets.add(new Projectile(player1.x-15, player1.y, 0, -10));
           bullets.add(new Projectile(player1.x+15, player1.y, 0, -10));
         }
-        
-        if(player1.cone){
+
+        if (player1.cone) {
           bullets.add(new Projectile(player1.x, player1.y, cos(radians(80))*-10, sin(radians(80))*-10));
-          bullets.add(new Projectile(player1.x, player1.y, cos(radians(100))*-10, sin(radians(100))*-10));  
+          bullets.add(new Projectile(player1.x, player1.y, cos(radians(100))*-10, sin(radians(100))*-10));
         }
-        
+
         cooldown1 = 0;
       }
     }
@@ -239,28 +239,27 @@ void draw() {
           bullets.add(new Projectile(player2.x-15, player2.y, 0, -10));
           bullets.add(new Projectile(player2.x+15, player2.y, 0, -10));
         }
-        
-        if(player2.cone){
+
+        if (player2.cone) {
           bullets.add(new Projectile(player2.x, player2.y, cos(radians(80))*-10, sin(radians(80))*-10));
-          bullets.add(new Projectile(player2.x, player2.y, cos(radians(100))*-10, sin(radians(100))*-10));  
+          bullets.add(new Projectile(player2.x, player2.y, cos(radians(100))*-10, sin(radians(100))*-10));
         }
-        
+
         cooldown2 = 0;
       }
     }
 
+    if (!gameOver(mode) && !BOSS) {
+      score++;
+    }
 
     if (player1.dead == 2 && (mode == ONE_PLAYER_GAME || player2.dead == 2)) {
+      highscore = max(score, highscore);
       resetGame();
     }
 
-    fill(255);
-    textSize(20);
-    textAlign(LEFT, BASELINE);
-    if(!gameOver(mode) && !BOSS){
-      score++;
-    }
-    text(score, 35, 50); 
+
+
 
 
     if (scroll > bossAspawn) {
@@ -295,17 +294,23 @@ void draw() {
     fill(#e0f070ca);
     if (abs(mouseX - width/2) < 75 && abs(mouseY - 275) < 30) {
       fill(#f070ca);
-      if (mousePressed) mode = ONE_PLAYER_GAME;
-      player1 = new Player(width/2, 400, 1);
+      if (mousePressed) {
+        mode = ONE_PLAYER_GAME;
+        player1 = new Player(width/2, 400, 1);
+        score = 0;
+      }
     }
     rect(width/2-75, 250, 150, 60, 5);
 
     fill(#e0f070ca);
     if (abs(mouseX - width/2) < 75 && abs(mouseY - 350) < 30) {
       fill(#f070ca);
-      if (mousePressed) mode = TWO_PLAYER_GAME;
-      player1 = new Player(width/3.0, 400, 1);
-      player2 = new Player(width*2.0/3, 400, 2);
+      if (mousePressed) {
+        mode = TWO_PLAYER_GAME;
+        player1 = new Player(width/3.0, 400, 1);
+        player2 = new Player(width*2.0/3, 400, 2);
+        score = 0;
+      }
     }
     rect(width/2-75, 325, 150, 60, 5);
 
@@ -314,14 +319,26 @@ void draw() {
     text("Two Players", width/2, 351);
 
     image(banner, width/2-160, 75, 330, 90);
+
+    if (highscore > 0) {
+      fill(255);
+      textSize(20);
+      textAlign(RIGHT, BASELINE);
+      text("High: " + highscore, width-35, 50);
+    }
   }
+
+  fill(255);
+  textSize(20);
+  textAlign(LEFT, BASELINE);
+  text(score, 35, 50);
 }
 
-boolean gameOver(int m){
-  if (m == ONE_PLAYER_GAME && player1.dead != 0){
+boolean gameOver(int m) {
+  if (m == ONE_PLAYER_GAME && player1.dead != 0) {
     return true;
   }
-  if (m == TWO_PLAYER_GAME && player1.dead != 0 && player2.dead != 0){
+  if (m == TWO_PLAYER_GAME && player1.dead != 0 && player2.dead != 0) {
     return true;
   }
   return false;
@@ -382,11 +399,9 @@ void handleEnemies() {
   if (scroll > nextEnemy) {
     if (random(1) < 0.33) {
       spawnStrawberries();
-    } 
-    else if (random(1) < 0.5){
+    } else if (random(1) < 0.5) {
       spawnTurnips();
-    }
-    else {
+    } else {
       spawnGrapes();
     }
     nextEnemy = (int) random(scroll + frameRate*2, scroll + frameRate*3);
@@ -425,6 +440,12 @@ void handleEnemies() {
 
             if (enemy.health == 0) {
               enemy.setDead();
+
+              if (enemy.equals(currentBoss)) {
+                score+=1000;
+              } else {
+                score+=100;
+              }
             }
           }
         }
@@ -481,12 +502,14 @@ void handleBells() {
 
     if (player1.dead == 0 && bell.collided(player1)) {
       player1.powerUp(bell.type);
+      score+=500;
 
       iter.remove();
       continue;
     }
     if (mode == TWO_PLAYER_GAME && player2.dead == 0 && bell.collided(player2)) {
       player2.powerUp(bell.type);
+      score+=500;
 
       iter.remove();
       continue;
@@ -501,6 +524,7 @@ void handleBells() {
         bell.xVel = (bell.x - bullet.x) / 27;
         bell.changeColor();
         itera.remove();
+
         break;
       }
     }
@@ -524,7 +548,7 @@ void spawnStrawberries() {
   } else {
     xSpawn = player2.x;
   }
-  
+
 
   if (player1.x > width/2) {
     xSpawn -= player1.y + 16;
@@ -569,7 +593,7 @@ void spawnTurnips() {
   }
 }
 
-void spawnGrapes(){
+void spawnGrapes() {
   float xSpawn;
   if (mode == ONE_PLAYER_GAME || player2.dead != 0 || random(1) < 0.5) {
     if (mode == TWO_PLAYER_GAME && player1.dead != 0) {
@@ -580,7 +604,7 @@ void spawnGrapes(){
   } else {
     xSpawn = player2.x;
   }
-  
+
 
   if (player1.x > width/2) {
     xSpawn -= player1.y + 16;

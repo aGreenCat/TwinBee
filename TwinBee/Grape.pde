@@ -24,7 +24,7 @@ class Grape extends Enemy {
 
   void changes() {
     if (player1.dead == 0) {
-      if (!changedDir && abs(y-player1.y) <= 130) {
+      if (!changedDir && abs(y-player1.y) <= 200) {
         yAcel = -0.10;
         changedDir = true;
         if (!shot) {
@@ -38,19 +38,16 @@ class Grape extends Enemy {
     }
 
     if (mode == TWO_PLAYER_GAME && player2.dead == 0) {
-      if (!changedDir && abs(player2.x - x) < 5 && player2.y - y < 128) {
-        xVel *= -1;
+      if (!changedDir && abs(y-player2.y) <= 200) {
+        yAcel = -0.10;
         changedDir = true;
-      }
-
-      float n = (player2.x - x)/(player2.y - y);
-      if (!changedDir && abs(xVel/yVel + n) < 0.05) {
-        if (player2.y < y) {
-          yVel*= -1;
-        } else {
-          xVel *= -1;
+        if (!shot) {
+          float hyp = sqrt(sq(player2.x - x) + sq(player2.y - y));
+          if (random(1) < 0.25) {
+            badBullets.add(new Projectile(x, y, 3*(player2.x - x)/hyp, 3*(player2.y - y)/hyp));
+          }
+          shot = true;
         }
-        changedDir = true;
       }
     }
   }
