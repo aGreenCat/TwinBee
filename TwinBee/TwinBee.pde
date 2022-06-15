@@ -172,6 +172,7 @@ void setup() {
 
 void resetGame() {
   backgroundM.stop();
+  bossM.stop();
   mode = MENU;
 
   bossAspawn = scroll + 90*60;

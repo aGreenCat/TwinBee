@@ -24,7 +24,7 @@ class Grape extends Enemy {
 
   void changes() {
     if (player1.dead == 0) {
-      if (!changedDir && abs(y-player1.y) <= 200) {
+      if (!changedDir && abs(y-player1.y) <= 170) {
         yAcel = -0.10;
         changedDir = true;
         if (!shot) {
@@ -38,7 +38,7 @@ class Grape extends Enemy {
     }
 
     if (mode == TWO_PLAYER_GAME && player2.dead == 0) {
-      if (!changedDir && abs(y-player2.y) <= 200) {
+      if (!changedDir && abs(y-player2.y) <= 170) {
         yAcel = -0.10;
         changedDir = true;
         if (!shot) {

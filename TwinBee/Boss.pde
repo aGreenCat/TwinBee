@@ -4,7 +4,7 @@ class Boss extends Enemy {
  
   Boss() {
     super(width/2, -320);
-    yVel = 2;
+    yVel = 1.5;
   }
 
   void display() {
