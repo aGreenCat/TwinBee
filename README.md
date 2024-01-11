@@ -1,18 +1,22 @@
-# NeXTCS Final Project
-### Programmer 0: Verit Li
-### Programmer 1: Tedd Lee
-### Class period: 10
+# TwinBee
+[TwinBee](https://www.retrogames.cz/play_009-NES.php?language=EN) is a Japanese arcade-style shooting game my mother played with her sister during her childhood. This remake, made in Processing \(Java\) is the final project for a CS class in my junior year of high school. The game features intense gameplay, such as juggling powerups, dodging and eliminating enemies, and bombing land structures. This remake also features two bosses, scorekeeping, a selection interface, complex enemy pathing, and projectiles.
+
+### To run:
+You will need [Processing](https://processing.org/download).
+
+1. Download this repository and open the Twinbee folder in Processing.
+2. Install the Sounds library inside Processing.
+3. Press the PLAY button to run.
+
 ---
 ### Proposal: TwinBee
 
-A vertical scrolling shooting game of one or two bees that shoot bells out of clouds to get power-ups and shoot random flying enemies and throw bombs at land sturctures that are mean. Includes bosses, scores, a selection interface, multiplayer (same computer), different enemy pathings and projectiles
-https://www.retrogames.cz/play_009-NES.php?language=EN
 #### Processing libraries: 
 - Sound - for defeating enemies, hitting objects
 #### Topics: 
 - keyboard inputs for game controls
 - using projectiles and hitboxes
-- either arrays or arraylists to store enemies
+- either arrays or ArrayLists to store enemies
 - subclasses for different types of enemies
 - some image processing for sprites
 ---
