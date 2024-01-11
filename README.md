@@ -1,4 +1,6 @@
 # TwinBee
+By Tedd Lee and Verit Li
+
 [TwinBee](https://www.retrogames.cz/play_009-NES.php?language=EN) is a Japanese arcade-style shooting game my mother played with her sister during her childhood. This remake, made in Processing \(Java\) is the final project for a CS class in my junior year of high school. The game features intense gameplay, such as juggling powerups, dodging and eliminating enemies, and bombing land structures. This remake also features two bosses, scorekeeping, a selection interface, complex enemy pathing, and projectiles.
 
 ### To run:
